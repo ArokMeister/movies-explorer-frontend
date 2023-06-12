@@ -1,0 +1,22 @@
+.promo {
+  background-color: #073042;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-image: url(../../../images/bg_promo_image.svg);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 320px;
+  height: 524px;
+}
+
+.promo__title {
+  margin: 0;
+  width: 730px;
+  font-size: 50px;
+  font-weight: 400;
+  line-height: 54px;
+  color: #fff;
+  text-align: center;
+}

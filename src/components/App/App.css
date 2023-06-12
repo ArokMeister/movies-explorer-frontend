@@ -1,0 +1,9 @@
+.App {
+  display: flex;
+  flex-direction: column;
+  min-width: 320px;
+  max-height: 100vh;
+  margin: 0 auto;
+  background-color: #fff;
+  font-family: 'Inter', 'Helvatica', sans-serif;
+}
