@@ -2,6 +2,7 @@
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 import Header from '../Header/Header';
 import Main from '../Main/Main';
+import Footer from '../Footer/Footer';
 
 function App () {
   // const [currentUser, setCurrentUser] = useState({name: 'user'})
@@ -12,6 +13,7 @@ function App () {
       <CurrentUserContext.Provider>
         <Header/>
         <Main />
+        <Footer />
       </CurrentUserContext.Provider>
     </div>
     

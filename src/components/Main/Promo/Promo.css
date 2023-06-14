@@ -8,7 +8,8 @@
   background-position: center;
   background-repeat: no-repeat;
   background-size: 320px;
-  height: 524px;
+  min-height: 524px;
+  width: 100%;
 }
 
 .promo__title {
