@@ -1,13 +1,20 @@
-import { Link } from 'react-router-dom';
-import logo from '../../images/header_logo_unauthorize.svg';
+import { useLocation } from 'react-router-dom';
+import logo from '../../images/logo_1.svg';
+import Navigation from '../Navigation/Navigation';
 
-function Header() {
+function Header({ loggedIn }) {
+
+  const location = useLocation();
+  const hideHeader = location.pathname === "/signin" || location.pathname === "/signup" ? "header_hide" : "header";
+  const headerTransparent = location.pathname === '/' ? {backgroundColor: '#073042'} : {backgroundColor: 'transparent'}
+
   return (
-    <header className="header">
-      <img className="header__logo" src={logo} alt="Логотип сайта" />
-      <div className="header__container">
-        <Link to="/signin" className="header__link">Регистрация</Link>
-        <Link to="/signup" className="header__link active">Войти</Link>
+    <header className={hideHeader} style={headerTransparent}>
+      <div className="header__container container">
+        <img className="header__logo" src={logo} alt="Логотип сайта" />
+        <nav className="header__nav-list">
+          <Navigation loggedIn={loggedIn} />
+        </nav>
       </div>
     </header>
   )

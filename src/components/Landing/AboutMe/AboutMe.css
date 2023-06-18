@@ -1,13 +1,15 @@
 .student {
-  display: flex;
-  flex-direction: column;
   width: 100%;
+}
+
+.student__container {
+  margin: 110px auto 100px;
 }
 
 .student__container-tittle {
   display: flex;
   flex-direction: column;
-  margin: 110px 70px 0;
+  margin: 0 70px 0;
 }
 
 .student__title {
@@ -28,7 +30,7 @@
   display: flex;
   flex-direction: row-reverse;
   justify-content: space-between;
-  margin: 0 70px 100px;
+  margin: 0 70px 0;
 }
 
 .student__photo {

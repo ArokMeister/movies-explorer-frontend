@@ -5,9 +5,9 @@ import Techs from './Techs/Techs';
 import AboutMe from './AboutMe/AboutMe';
 import Portfolio from './Portfolio/Portfolio';
 
-function Main () {
+function Landing () {
   return (
-    <div className='main'>
+    <div className='landing'>
       <Promo />
       <NavTab />
       <AboutProject />
@@ -18,4 +18,4 @@ function Main () {
   )
 }
 
-export default Main;
+export default Landing;

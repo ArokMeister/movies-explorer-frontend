@@ -1,15 +1,23 @@
 .project {
-  max-width: 1280px;
+  /* max-width: 1280px; */
   background-color: #fff;
+  width: 100%;
+  /* display: flex; */
+  /* flex-direction: column; */
+  /* gap: 110px; */
+  /* margin: 0 auto; */
+}
+
+.project__container {
   display: flex;
   flex-direction: column;
   gap: 110px;
-  margin: 0 auto;
+  margin: 110px auto 110px;
 }
 
 .project__container-about {
   display: grid;
-  margin: 110px 70px 0;
+  margin: 0 70px;
   column-gap: 30px;
   grid-template-columns: repeat(2, 1fr);
   grid-template-rows: repeat(4, 0.3fr);
@@ -17,7 +25,7 @@
 
 .project__container-roadmap {
   display: grid;
-  margin: 0 70px 110px;
+  margin: 0 70px;
   grid-template-columns: 20% 80%;
   grid-template-rows: repeat(2, 36px);
 }
