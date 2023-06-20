@@ -29,6 +29,8 @@
 @import url(./components/Main/FilterCheckbox/FilterCheckbox.css);
 @import url(./components/Main/Movies/Movies.css);
 @import url(./components/Main/SearchForm/SearchForm.css);
+@import url(./components/Main/MoviesCard/MoviesCard.css);
+@import url(./components/Main/MoviesCardList/MoviesCardList.css);
 
 
 /* body {

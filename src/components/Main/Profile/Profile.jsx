@@ -5,7 +5,7 @@ import Form from "../../authorize/Form/Form";
 function Profile({ currentUser, onUpdate }) {
 
   const [values, setValues] = useState({ name: '', email: '' })
-
+  console.log(currentUser)
   function onChange(evt) {
     setValues({ ...values, [evt.target.name]: evt.target.value })
   }

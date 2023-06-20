@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Routes, Route, useNavigate } from 'react-router-dom';
+import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 import Header from '../Header/Header';
 import Landing from '../Landing/Landing';
@@ -12,19 +12,32 @@ import * as api from '../../utils/Api';
 import movie from '../../utils/MovieApi';
 
 function App () {
-  const [movieList, setMovieList] = useState([]);
+  const [moviesList, setMoviesList] = useState([]);
   const [currentUser, setCurrentUser] = useState({});
-  const [loggedIn, setLoggedIn] = useState(true);
+  const [loggedIn, setLoggedIn] = useState(false);
 
   const navigate = useNavigate();
+
+  // async function handleGetMovie() {
+  //   try {
+  //     const data = await movie.getMovieData();
+  //     setMoviesList('load')
+  //     const listMovie = JSON.stringify(data)
+  //     localStorage.setItem('Movies', listMovie)
+  //     console.log(moviesList)
+  //   } catch(err) {
+  //     console.log(err)
+  //   }
+    
+  // }
 
   function handleGetMovie() {
     movie.getMovieData()
       .then(data => {
+        setMoviesList(data)
         const movieData = JSON.stringify(data);
-        setMovieList(data)
-        console.log(movieList)
         localStorage.setItem('Movies', movieData)
+        console.log("DATA", data, "MOVIELIST", moviesList)
       })
   }
 
@@ -34,8 +47,9 @@ function App () {
         if (data) {
           localStorage.setItem('Authorized', 'true')
           setLoggedIn(true)
-          setCurrentUser(data)
-          // navigate('/', { replace: true })
+          console.log(currentUser)
+          handleGetMovie()
+          navigate('/movies', { replace: true })
         }
       })
       .catch(err => console.log(err))
@@ -44,18 +58,20 @@ function App () {
   function handleRegister(name, email, password) {
     api.register(name, email, password)
     .then(data => {
-      setCurrentUser(data)
+      console.log(data, "DATA")
+      setCurrentUser({data})
+      console.log(currentUser, "CURRENT USER")
     })
     .catch(err => console.log(err))
   }
 
-  function handleUpdateUser(userData) {
-    api.updateUser(userData)
-      .then(data => {
-        setCurrentUser(data)
-      })
-      .catch(err => console.log(err))
-  }
+  // function handleUpdateUser(userData) {
+  //   api.updateUser(userData)
+  //     .then(data => {
+  //       setCurrentUser(data)
+  //     })
+  //     .catch(err => console.log(err))
+  // }
   
   const goLanding = () => {
     navigate('/', { replace: true })
@@ -69,8 +85,8 @@ function App () {
           <Route path="/" element={<Landing />} />
           <Route path="/signup" element={<Register onRegister={handleRegister} goLanding={goLanding} />} />
           <Route path="/signin" element={<Login onLogin={handleLogin} goLanding={goLanding}/>} />
-          <Route path="/profile" element={<Profile onUpdate={handleUpdateUser} />} />
-          <Route path="/movies" element={<Movies getMovie={handleGetMovie} />} />
+          <Route path="/profile" element={<Profile currentUser={currentUser} />} />
+          <Route path="/movies" element={<Movies moviesList={moviesList} getMovie={handleGetMovie} />} />
         </Routes>
         <Footer />
       </CurrentUserContext.Provider>
