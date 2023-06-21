@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import Form from '../Form/Form';
 import logo from '../../../images/logo_1.svg'
 
+import "./Register.css"
+
 function Register ({ goLanding, onRegister }) {
 
   const [values, setValues] = useState({ name: '', email: '', password: '' })

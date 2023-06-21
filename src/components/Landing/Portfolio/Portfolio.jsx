@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { staticSite, adaptiveSite, singlePageApplication } from "../../../utils/constants";
 
+import "./Portfolio.css";
 
 function Portfolio () {
   return (

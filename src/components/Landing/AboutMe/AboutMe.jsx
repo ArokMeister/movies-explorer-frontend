@@ -1,14 +1,13 @@
 import { Link } from "react-router-dom";
 import studentImage from "../../../images/student.jpg";
 
+import "./AboutMe.css";
+
 function AboutMe () {
   return (
     <section className="student" id="student">
       <div className="student__container container">
-        <div className="student__container-tittle">
-          <h2 className="student__title">Студент</h2>
-          <span className="student__line" />
-        </div>
+        <h2 className="student__title">Студент</h2>
         <div className="student__container-info">
           <img className="student__photo" src={studentImage} alt="Фото студента" />
           <div className="student__container-text">

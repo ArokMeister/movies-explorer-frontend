@@ -1,9 +1,11 @@
-import FilterCheckbox from "../FilterCheckbox/FilterCheckbox"
+import FilterCheckbox from "../FilterCheckbox/FilterCheckbox";
 
-function SearchForm({ getMovie }) {
+import "./SearchForm.css";
+
+function SearchForm() {
   return (
     <div className="search__container container">
-      <form className="search__form" onClick={getMovie}>
+      <form className="search__form">
         <input 
           className="search__input"
           placeholder="Фильм"
@@ -12,7 +14,7 @@ function SearchForm({ getMovie }) {
           type="text"
           autoComplete="off"
           />
-          <button className="search__btn" onClick={getMovie} type="submit"/>
+          <button className="search__btn" type="submit"/>
       </form>
       <FilterCheckbox />
     </div>

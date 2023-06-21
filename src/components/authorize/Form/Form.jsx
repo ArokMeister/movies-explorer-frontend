@@ -1,7 +1,9 @@
 import { useLocation } from "react-router-dom";
 import { useForm } from "react-hook-form";
 
-function Form ({ onSubmit, onChange, btnText, values }) {
+import "./Form.css";
+
+function Form ({ onSubmit, onChange, btnText, values, currentUser }) {
 
   const { register, formState: { errors }, handleSubmit } = useForm({ mode: "onChange" })
 
@@ -19,7 +21,7 @@ function Form ({ onSubmit, onChange, btnText, values }) {
             id='name'
             autoComplete='off'
             style={errors.name ? {color: "#FF3055"} : {color: "#000"}}
-            value={values.name}
+            value={`Username`}
             {...register("name", {
               required: "Обязательное поле",
               minLength: {
@@ -38,7 +40,7 @@ function Form ({ onSubmit, onChange, btnText, values }) {
             id='email'
             autoComplete='off'
             style={errors.email ? {color: "#FF3055"} : {color: "#000"}}
-            value={values.email}
+            value={`test@test.ru`}
             {...register("email", {
               required: "Обязательное поле",
               pattern: {
@@ -56,8 +58,8 @@ function Form ({ onSubmit, onChange, btnText, values }) {
             name='password'
             id='password'
             autoComplete='off'
-            style={errors.password ? {color: "#FF3055"} : {color: "#000"}}
-            value={values.password}
+            style={errors.password ? {color: "#FF3055"} : {color: "#FF3055"}}
+            value={"password"}
             {...register("password", {
               required: "Обязательное поле",
               minLength: {
@@ -67,7 +69,7 @@ function Form ({ onSubmit, onChange, btnText, values }) {
               onChange: onChange
             })}
           />
-          <span className="form__error">{errors?.password?.message}</span>
+          <span className="form__error">Что-то пошло не так...</span>
           <button className="form__btn" >{btnText}</button>
         </form>
       </div>
@@ -122,7 +124,7 @@ function Form ({ onSubmit, onChange, btnText, values }) {
   }
   if (location.pathname === "/profile") {
     return (
-      <div className="form__container-profile">
+      <div className="form__container">
         <form className="form form__profile" onSubmit={handleSubmit(onSubmit)} noValidate>
           <label className="form__label-profile">
             Имя
@@ -133,7 +135,7 @@ function Form ({ onSubmit, onChange, btnText, values }) {
               id='name'
               autoComplete='off'
               style={errors.name ? {color: "#FF3055"} : {color: "#000"}}
-              value={values.name}
+              value={currentUser.name}
               {...register("name", {
                 required: "Обязательное поле",
                 minLength: {
@@ -144,7 +146,6 @@ function Form ({ onSubmit, onChange, btnText, values }) {
               })}
             />
           </label>
-          <span className="form__error center">{errors?.name?.message}</span>
           <span className="form__line" />
           <label className="form__label-profile">
             E-mail
@@ -155,7 +156,7 @@ function Form ({ onSubmit, onChange, btnText, values }) {
               id='email'
               autoComplete='off'
               style={errors.email ? {color: "#FF3055"} : {color: "#000"}}
-              value={values.email}
+              value={currentUser.email}
               {...register("email", {
                 required: "Обязательное поле",
                 pattern: {
@@ -166,8 +167,8 @@ function Form ({ onSubmit, onChange, btnText, values }) {
               })}
             />
           </label>
-          <span className="form__error center">{errors?.email?.message}</span>
-          <button className="form__btn-profile" >{btnText}</button>
+          <span className="form__error center">{errors?.message}</span>
+          <button className="form__btn-profile" disabled={true} >{btnText}</button>
         </form>
       </div>
     )

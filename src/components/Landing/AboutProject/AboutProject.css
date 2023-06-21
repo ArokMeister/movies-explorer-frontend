@@ -1,11 +1,6 @@
 .project {
-  /* max-width: 1280px; */
   background-color: #fff;
   width: 100%;
-  /* display: flex; */
-  /* flex-direction: column; */
-  /* gap: 110px; */
-  /* margin: 0 auto; */
 }
 
 .project__container {
@@ -20,7 +15,7 @@
   margin: 0 70px;
   column-gap: 30px;
   grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: repeat(4, 0.3fr);
+  grid-template-rows: repeat(3, 0.3fr);
 }
 
 .project__container-roadmap {
@@ -30,19 +25,14 @@
   grid-template-rows: repeat(2, 36px);
 }
 
-.project__line {
-  grid-column: 1 / span 2;
-  background-color: #000;
-  height: 1px;
-  margin: 23px 0 70px;
-}
-
 .project__title {
   grid-column: 1 / span 2;
   font-size: 22px;
   font-weight: 400;
   line-height: 1.2;
-  margin: 0;
+  margin: 0 0 70px;
+  padding: 0 0 23px;
+  border-bottom: 1px solid #000;
 }
 
 .project__subtitle {
@@ -78,24 +68,81 @@
 }
 
 
-/* @media screen and (max-width: 1300px) {
-  .project__container_about {
-    margin: 110px 70px 0;
-  }
-  
-  .project__container_roadmap {
-    margin: 110px 70px 0;
-  }
-} */
-
 @media screen and (max-width: 1280px) {
   .project__container_roadmap {
     grid-template-columns: minmax(100px, 228px) minmax(184px, 912px);
-}
+  }
 }
 
-@media screen and (max-width: 800px) {
-  .project {
-    
+@media screen and (max-width: 768px) {
+  .project__container {
+    margin: 90px 50px;
+    gap: 93px;
+  }
+
+  .project__container-about {
+    margin: 0;
+  }
+
+  .project__container-roadmap {
+    margin: 0;
+    grid-template-columns: 30% 70%;
+  }
+
+  .project__subtitle {
+    padding-bottom: 22px;
+  }
+
+  .project__text {
+    font-size: 12px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .project__container {
+    margin: 70px 18px;
+    gap: 60px;
+  }
+
+  .project__container-about {
+    grid-template-columns: repeat(1, 1fr);
+    grid-template-rows: repeat(5, 0.3fr);
+  }
+
+  .project__title {
+    font-size: 18px;
+    padding-bottom: 28px;
+    margin-bottom: 60px;
+    grid-row: 1;
+  }
+  
+  .project__subtitle {
+    font-size: 18px;
+    padding-bottom: 16px;
+  }
+
+  .project__subtitle_row-2 {
+    grid-row: 2;
+  }
+
+  .project__subtitle_row-4 {
+    grid-row: 4;
+    margin-top: 56px;
+  }
+  
+  .project__text {
+    font-size: 11px;
+  }
+
+  .project__text_row-3 {
+    grid-row: 3;
+  }
+
+  .project__text_row-5 {
+    grid-row: 5;
+  }
+
+  .project__container-roadmap {
+    grid-template-columns: 35% 65%;
   }
 }

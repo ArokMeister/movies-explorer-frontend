@@ -1,3 +1,5 @@
+import "./FilterCheckbox.css";
+
 function FilterCheckbox() {
   return (
     <div className="filter__container">

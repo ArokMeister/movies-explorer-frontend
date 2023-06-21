@@ -17,7 +17,8 @@
   font-size: 24px;
   font-weight: 500;
   line-height: 1.2;
-  margin: 40px 0;
+  margin: 0;
+  padding: 40px 0;
 }
 
 .register__subtitle {
@@ -31,4 +32,36 @@
 .register__link {
   color: #3456F3;
   text-decoration: none;
+}
+
+.register__link:hover {
+  opacity: .7;
+  transition: .4s;
+}
+
+@media screen and (max-width: 480px) {
+  .register {
+    display: block;
+  }
+  
+  .register__container {
+    margin: 70px 30px;
+    min-width: auto;
+  }
+
+  .register__logo {
+    display: block;
+    align-items: center;
+    margin: 0 auto;
+  }
+
+  .register__title {
+    padding: 50px 0 80px;
+    text-align: center;
+  }
+
+
+  .register__subtitle {
+    font-size: 12px;
+  }
 }

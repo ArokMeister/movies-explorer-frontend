@@ -5,6 +5,8 @@ import Techs from './Techs/Techs';
 import AboutMe from './AboutMe/AboutMe';
 import Portfolio from './Portfolio/Portfolio';
 
+import "./Landing.css";
+
 function Landing () {
   return (
     <div className='landing'>

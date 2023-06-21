@@ -1,5 +1,7 @@
 import { HashLink } from "react-router-hash-link";
 
+import "./NavTab.css";
+
 function NavTab () {
   return (
     <section className="navtab">

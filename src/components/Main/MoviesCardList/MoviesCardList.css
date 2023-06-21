@@ -6,5 +6,19 @@
   row-gap: 38px;
   list-style: none;
   padding: 0;
-  margin: 0;
+  margin: 0 auto;
+}
+
+@media screen and (max-width: 768px) {
+  .movies__list {
+    grid-template-columns: repeat(auto-fill, 339px);
+    gap: 30px;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .movies__list {
+    grid-template-columns: repeat(1, 300px);
+    gap: 30px;
+  }
 }

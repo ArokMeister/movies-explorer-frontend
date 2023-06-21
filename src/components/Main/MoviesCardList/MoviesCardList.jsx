@@ -1,12 +1,18 @@
 import MoviesCard from "../MoviesCard/MoviesCard";
 
-function MoviesCardList({ moviesList }) {
+import "./MoviesCardList.css";
+
+function MoviesCardList({ render }) {
+
+  const movies = render()
   return (
     <ul className="movies__list container">
-      {/* {moviesList.map(movies => ( */}
-        <MoviesCard 
+      {movies.map(item => (
+          <MoviesCard 
+            key={item.id}
+            movie={item}
           />
-      {/* ))} */}
+      ))}
     </ul>
   )
 }

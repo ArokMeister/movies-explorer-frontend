@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import Form from '../Form/Form';
 import logo from '../../../images/logo_1.svg'
 
+import "./Login.css"
+
 function Login ({ goLanding, onLogin }) {
 
   const [values, setValues] = useState({ email: '', password: '' })
