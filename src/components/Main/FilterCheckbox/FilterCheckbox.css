@@ -1,7 +1,9 @@
 .filter__container {
   display: flex;
+  flex-direction: row-reverse;
   justify-content: center;
   align-items: center;
+  gap: 14px;
 }
 
 .filter__text {
@@ -43,10 +45,10 @@
   content: "";
   position: absolute;
   cursor: pointer;
-  top: 2px;
-  left: 2px;
-  width: 16px;
-  height: 16px;;
+  top: 6px;
+  left: 6px;
+  width: 8px;
+  height: 8px;;
   background-color: #FFF;
   border-radius: 50%;
   transition: .3s;
@@ -58,6 +60,12 @@
 
 .filter__input:checked + .filter__slider::before {
   transform: translateX(16px);
+}
+
+@media screen and (max-width: 768px) {
+  .filter__container {
+    flex-direction: row;
+  }
 }
 
 @media screen and (max-width: 480px) {

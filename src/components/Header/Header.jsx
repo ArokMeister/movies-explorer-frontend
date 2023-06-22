@@ -1,24 +1,22 @@
 import { useLocation } from 'react-router-dom';
-import logo from '../../images/logo_1.svg';
+import logo from '../../images/logo.svg';
 import Navigation from '../Navigation/Navigation';
 
 import "./Header.css";
 
 function Header({ loggedIn }) {
 
-  const location = useLocation();
+  const { pathname } = useLocation();
   const headerRoutes = [ "/", "/profile", "/movies", "/saved-movies" ];
-  const hideHeader = headerRoutes.includes(location.pathname);
-  const headerTransparent = location.pathname === '/' ? {backgroundColor: '#073042'} : {backgroundColor: 'transparent'}
+  const hideHeader = headerRoutes.includes(pathname);
+  const headerTransparent = pathname === '/' ? {backgroundColor: '#465DFF'} : {backgroundColor: 'transparent'}
 
   return (
     hideHeader &&
     <header className={hideHeader ? "header" : "header_hide"} style={headerTransparent}>
       <div className="header__container container">
         <img className="header__logo" src={logo} alt="Логотип сайта" />
-        <nav className="header__nav-list">
-          <Navigation loggedIn={loggedIn} />
-        </nav>
+        <Navigation loggedIn={loggedIn} />
       </div>
     </header>
   )

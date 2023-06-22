@@ -21,53 +21,48 @@ function Navigation({ loggedIn }) {
       return ''
     }
   }
-
-  const landingHeader = (link, className) => {
-    const landingPage = location.pathname;
-    if (landingPage === link) {
-      return ""
-    } else {
-      return className
-    }
-  }
   
   return (
-    <nav className={`navigation ${isMenuOpen ? "navigation__bg" : ""}`}>
-      <button className={`burger ${isMenuOpen ? "close" : ""}`} onClick={toggleMenu}>
-        <span className="burger__span"></span>
-        <span className="burger__span"></span>
-        <span className="burger__span"></span>
-      </button>
-      <ul className={`navigation__list navigation__list-burger ${isMenuOpen ? "open" : ""}`}>
-        {loggedIn ?
-          <>
-            <li className="navigation__list-item hiden">
-              <Link className={`navigation__list-link ${focusPage('/', 'focus')}`} to="/">Главная</Link>
+    <>
+      {location.pathname === "/" &&
+        <nav className="navigation__landing">
+          <ul className="navigation__landing-list">
+            <li className="navigation__landing-item">
+              <Link className="navigation__landing-link white" to="/signup">Регистрация</Link>
             </li>
-            <li className="navigation__list-item">
-              <Link className={`navigation__list-link ${focusPage('/movies', 'focus')}`} to="/movies">Фильмы</Link>
+            <li className="navigation__landing-item">
+              <Link className="navigation__landingt-link active" to="/signin">Войти</Link>
             </li>
-            <li className="navigation__list-item">
-              <Link className={`navigation__list-link ${focusPage('/saved-movies', 'focus')}`} to="/saved-movies">Сохраненные фильмы</Link>
-            </li>
-            <li className="navigation__list-item account">
-              <Link className={`navigation__list-link ${focusPage('/profile', 'focus')}`} to="/profile">Аккаунт <div className="navigation__list-icon" /></Link>
-            </li>
-          </> 
-          :
-          <>
-            <li className="navigation__list-item">
-              <Link className="navigation__list-link white" to="/signup">Регистрация</Link>
-            </li>
-            <li className="navigation__list-item">
-              <Link className="navigation__list-link active" to="/signin">Войти</Link>
-            </li>
-          </>
-        }
-      </ul>
-    </nav>
-  )
-}
+          </ul>
+        </nav>
+      }
+      {location.pathname !== "/" &&
+        <nav className={`navigation ${isMenuOpen ? "navigation__bg" : ""}`}>
+          <button className={`burger ${isMenuOpen ? "close" : ""}`} onClick={toggleMenu}>
+            <span className="burger__span"></span>
+            <span className="burger__span"></span>
+            <span className="burger__span"></span>
+          </button>
+          <ul className={`navigation__list navigation__list-burger ${isMenuOpen ? "open" : ""}`}>
+              <div className="navigation__list-center">
+                <li className="navigation__list-item hiden">
+                  <Link className={`navigation__list-link ${focusPage('/', 'focus')}`} to="/">Главная</Link>
+                </li>
+                <li className="navigation__list-item">
+                  <Link className={`navigation__list-link ${focusPage('/movies', 'focus')}`} to="/movies">Фильмы</Link>
+                </li>
+                <li className="navigation__list-item">
+                  <Link className={`navigation__list-link ${focusPage('/saved-movies', 'focus')}`} to="/saved-movies">Сохраненные фильмы</Link>
+                </li>
+              </div>
+              <li className="navigation__list-item account">
+                <Link className="navigation__list-link" to="/profile">Аккаунт <div className="navigation__list-icon" /></Link>
+              </li>
+           </ul>
+        </nav>
+      }
+  </>
+)}
 
 export default Navigation;
 

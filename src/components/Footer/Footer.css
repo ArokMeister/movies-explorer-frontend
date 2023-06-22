@@ -1,5 +1,6 @@
 .footer {
   display: block;
+  background-color: #FAFAFA;
 }
 
 .footer_hide {
@@ -13,7 +14,8 @@
   justify-content: center;
   align-items: center;
   justify-content: space-between;
-  margin: 79px auto 20px;
+  margin: 0 auto;
+  padding: 79px 0 20px;
   gap: 20px;
 }
 
@@ -57,6 +59,10 @@
 }
 
 @media screen and (max-width: 768px) {
+  .footer {
+    background-color: transparent;
+  }
+
   .footer__container {
     margin: 79px 30px 20px;
   }

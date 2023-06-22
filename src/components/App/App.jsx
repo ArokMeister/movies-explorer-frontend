@@ -16,20 +16,10 @@ import movie from '../../utils/MovieApi';
 function App () {
   const [moviesList, setMoviesList] = useState([]);
   const [currentUser, setCurrentUser] = useState({name: 'Denis', email: 'test@test.ru'});
-  const [loggedIn, setLoggedIn] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
 
   const navigate = useNavigate();
-
-  // async function handleGetMovie() {
-  //   try {
-  //     const data = await movie.getMovieData();
-  //     setMoviesList(data)
-  //     const listMovie = JSON.stringify(data)
-  //     localStorage.setItem('Movies', listMovie)
-  //   } catch(err) {
-  //     console.log(err)
-  //   }
-  // }
 
   useEffect(() => {
     loggedIn &&
@@ -55,6 +45,7 @@ function App () {
     if (movieData) {
       const parsedData = JSON.parse(movieData);
       const first12Rows = parsedData.slice(0, 12);
+      setIsLoading(false);
       return first12Rows;
     }
   }
@@ -64,6 +55,7 @@ function App () {
     if (movieData) {
       const parsedData = JSON.parse(movieData);
       const first5Rows = parsedData.slice(0, 5);
+      setTimeout(() => {setIsLoading(false)}, 7000)
       return first5Rows;
     }
   }
@@ -122,10 +114,8 @@ function App () {
           <Route path="/signup" element={<Register onRegister={handleRegister} goLanding={goLanding} />} />
           <Route path="/signin" element={<Login onLogin={handleLogin} goLanding={goLanding}/>} />
           <Route path="/profile" element={<Profile currentUser={currentUser} onLogout={handleLogOut} />} />
-          <Route path="/movies" element={<Movies render={render12Movie} moviesList={moviesList}  />} />
+          <Route path="/movies" element={<Movies isLoading={isLoading} render={render12Movie} moviesList={moviesList}  />} />
           <Route path="/saved-movies" element={<SavedMovies render={render5Movie} moviesList={moviesList}  />} />
-          {/* <Route path="/movies" element={<Movies render={render12Movie} moviesList={moviesList} getMovie={handleGetMovie} />} />
-          <Route path="/saved-movies" element={<SavedMovies render={render5Movie} moviesList={moviesList} getMovie={handleGetMovie} />} /> */}
           <Route path="*" element={<NotFound />} />
         </Routes>
         <Footer />

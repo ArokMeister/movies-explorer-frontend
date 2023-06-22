@@ -14,7 +14,7 @@ function SearchForm() {
           type="text"
           autoComplete="off"
           />
-          <button className="search__btn" type="submit"/>
+          <button className="search__btn" type="submit">Найти</button>
       </form>
       <FilterCheckbox />
     </div>
