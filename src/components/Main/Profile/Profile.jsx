@@ -16,13 +16,13 @@ function Profile({ currentUser, onUpdate, onLogout }) {
   // }
 
   return (
-    <section className="profile">
+    <main className="profile">
       <div className="profile__container">
         <h1 className="profile__title">{`Привет, ${currentUser.name}!`}</h1>
         <Form currentUser={currentUser} btnText="Редактировать"/>
         <NavLink className="profile__exit" to="/" onClick={onLogout}>Выйти из аккаунта</NavLink>
       </div>
-    </section>
+    </main>
   )
 }
 

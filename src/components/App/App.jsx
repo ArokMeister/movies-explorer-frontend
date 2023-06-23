@@ -108,14 +108,14 @@ function App () {
   return (
     <div className='App'>
       <CurrentUserContext.Provider value={currentUser}>
-        <Header loggedIn={loggedIn}/>
+        <Header loggedIn={loggedIn} goLanding={goLanding}/>
         <Routes>
           <Route path="/" element={<Landing />} />
           <Route path="/signup" element={<Register onRegister={handleRegister} goLanding={goLanding} />} />
           <Route path="/signin" element={<Login onLogin={handleLogin} goLanding={goLanding}/>} />
           <Route path="/profile" element={<Profile currentUser={currentUser} onLogout={handleLogOut} />} />
-          <Route path="/movies" element={<Movies isLoading={isLoading} render={render12Movie} moviesList={moviesList}  />} />
-          <Route path="/saved-movies" element={<SavedMovies render={render5Movie} moviesList={moviesList}  />} />
+          <Route path="/movies" element={<Movies isLoading={isLoading} render={render12Movie} moviesList={moviesList} />} />
+          <Route path="/saved-movies" element={<SavedMovies render={render5Movie} moviesList={moviesList} />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
         <Footer />

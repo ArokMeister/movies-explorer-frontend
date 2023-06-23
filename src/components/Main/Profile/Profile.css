@@ -37,6 +37,10 @@
   background-color: #FFF;
   cursor: pointer;
   width: max-content;
+
+  &:hover {
+    opacity: .7;
+  }
 }
 
 @media screen and (max-width: 480px) {

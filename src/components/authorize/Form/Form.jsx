@@ -168,7 +168,7 @@ function Form ({ onSubmit, onChange, btnText, values, currentUser }) {
             />
           </label>
           <span className="form__error center">{errors?.message}</span>
-          <button className="form__btn-profile" disabled={true} >{btnText}</button>
+          <button className="form__btn-profile">{btnText}</button>
         </form>
       </div>
     )

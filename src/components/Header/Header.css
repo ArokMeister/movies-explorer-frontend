@@ -8,6 +8,11 @@
 
 .header__logo {
   margin-left: 70px;
+  cursor: pointer;
+
+  &:hover {
+    opacity: .7;
+  }
 }
 
 .header__container {

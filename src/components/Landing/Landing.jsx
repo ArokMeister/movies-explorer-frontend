@@ -8,13 +8,13 @@ import "./Landing.css";
 
 function Landing () {
   return (
-    <div className='landing'>
+    <main className='landing'>
       <Promo />
       <AboutProject />
       <Techs />
       <AboutMe />
       <Portfolio />
-    </div>
+    </main>
   )
 }
 

@@ -8,11 +8,11 @@ function NotFound () {
   const stepBack = () => navigate(-1)
 
   return (
-    <div className="notfound__container">
+    <main className="notfound">
       <h1 className="notfound__title">404</h1>
       <p className="notfount__subtitle">Страница не найдена</p>
       <button className="notfound__btn" onClick={stepBack}>Назад</button>
-    </div>
+    </main>
   )
 }
 

@@ -1,6 +1,9 @@
 .page {
   min-width: 320px;
   font-family: 'Inter', 'Helvatica', sans-serif;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .root {
