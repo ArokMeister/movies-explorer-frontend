@@ -1,4 +1,4 @@
-class MovieApi {
+class MoviesApi {
   constructor() {
     this._baseURL = 'https://api.nomoreparties.co/beatfilm-movies';
     this._headers = { 'Accept': 'application/json',
@@ -13,15 +13,12 @@ class MovieApi {
     return res.json();
   }
 
-  getMovieData() {
-    return fetch(`${this._baseURL}`, {
-      // headers: this._headers,
-      // credentials: this._credentials
-    })
+  getMoviesData() {
+    return fetch(`${this._baseURL}`)
       .then(res => this._verifyResponse(res));
   }
 }
 
-const movie = new MovieApi();
+const movies = new MoviesApi();
 
-export default movie;
+export default movies;

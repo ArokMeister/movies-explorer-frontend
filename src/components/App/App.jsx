@@ -1,6 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
+import ProtectedRoute from '../Main/ProtectedRoute/ProtectedRoute';
 import Header from '../Header/Header';
 import Landing from '../Landing/Landing';
 import Register from '../authorize/Register/Register';
@@ -10,117 +11,128 @@ import Movies from '../Main/Movies/Movies';
 import SavedMovies from '../Main/SavedMovies/SavedMovies';
 import NotFound from '../Main/NotFound/NotFound';
 import Footer from '../Footer/Footer';
-import * as api from '../../utils/Api';
-import movie from '../../utils/MovieApi';
+import * as MainApi from '../../utils/MainApi';
+import movies from '../../utils/MoviesApi';
+import Preloader from '../Main/Preloader/Preloader';
 
 function App () {
-  const [moviesList, setMoviesList] = useState([]);
-  const [currentUser, setCurrentUser] = useState({name: 'Denis', email: 'test@test.ru'});
-  const [loggedIn, setLoggedIn] = useState(true);
+  const [savedMoviesList, setSavedMoviesList] = useState([]);
+  // const [currentUser, setCurrentUser] = useState(JSON.parse(localStorage.getItem("currentUser")) || {});
+  // const [loggedIn, setLoggedIn] = useState(localStorage.getItem("loggedIn") === "true" || false);
+  const [currentUser, setCurrentUser] = useState({});
+  const [loggedIn, setLoggedIn] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
   const navigate = useNavigate();
-
-  useEffect(() => {
-    loggedIn &&
-      movie.getMovieData()
-      .then(data => {
-        setMoviesList(data)
-        const movieData = JSON.stringify(data);
-        localStorage.setItem('Movies', movieData)
-      })
-  }, [loggedIn])
-
-  // function handleGetMovie() {
-  //   movie.getMovieData()
-  //     .then(data => {
-  //       setMoviesList(data)
-  //       const movieData = JSON.stringify(data);
-  //       localStorage.setItem('Movies', movieData)
-  //     })
-  // }
-
-  function render12Movie() {
-    const movieData = localStorage.getItem('Movies');
-    if (movieData) {
-      const parsedData = JSON.parse(movieData);
-      const first12Rows = parsedData.slice(0, 12);
-      setIsLoading(false);
-      return first12Rows;
-    }
-  }
-
-  function render5Movie() {
-    const movieData = localStorage.getItem('Movies');
-    if (movieData) {
-      const parsedData = JSON.parse(movieData);
-      const first5Rows = parsedData.slice(0, 5);
-      setTimeout(() => {setIsLoading(false)}, 7000)
-      return first5Rows;
-    }
-  }
   
-
-  function handleLogin(email, password) {
-    api.authorize(email, password)
-      .then(data => {
-        if (data) {
-          localStorage.setItem('Authorized', 'true')
-          setLoggedIn(true)
-          // handleGetMovie()
-          navigate('/movies', { replace: true })
-        }
-      })
-      .catch(err => console.log(err))
+  const handleSavedMovies = async () => {
+    try {
+      const savedMovies = await MainApi.getSavedMovies();
+      setSavedMoviesList(savedMovies)
+    } catch(err) {
+      console.log(err)
+    }
   }
 
-  function handleRegister(name, email, password) {
-    api.register(name, email, password)
-      .then(data => {
-      // setCurrentUser({data})
-        navigate('/signin', { replace: true })
-    })
-    .catch(err => console.log(err))
+  const addFavoritMovies = async (movie) => {
+    console.log(movie.image.url)
+    try {
+      const favorit = await MainApi.addFavorit({
+        ...movie,
+        image: `https://api.nomoreparties.co${movie.image.url}`, 
+        thumbnail: `https://api.nomoreparties.co${movie.image.formats.thumbnail.url}`, 
+        movieId: movie.id
+      })
+      setSavedMoviesList([...savedMoviesList, favorit])
+    } catch(err) {
+      console.log(err)
+    }
+  }
+ 
+  async function handleLogin(email, password) {
+
+    try {
+      const { user } = await MainApi.authorize(email, password);
+      localStorage.setItem('loggedIn', 'true');
+      // localStorage.setItem("currentUser", JSON.stringify(user))
+      setLoggedIn(true);
+      setCurrentUser(user);
+      handleSavedMovies()
+      navigate ('/movies', { replace: true });
+    } catch(err) {
+      console.log(err)
+    }
+  }
+
+  async function handleRegister(name, email, password) {
+    try {
+      await MainApi.register(name, email, password);
+      await handleLogin(email, password)
+    } catch(err) {
+      console.log(err)
+    }
   }
 
   function handleLogOut() {
-    // api.clearToken()
-    //   .then(() => {
+    MainApi.clearToken()
+      .then(() => {
         setLoggedIn(false)
-        localStorage.removeItem('Authorized')
+        localStorage.clear()
         navigate('/', { replace: true })
-      // })
-      // .catch(err => console.log(err))
+      })
+      .catch(err => console.log(err))
   }
-
-  // function handleUpdateUser(userData) {
-  //   api.updateUser(userData)
-  //     .then(data => {
-  //       setCurrentUser(data)
-  //     })
-  //     .catch(err => console.log(err))
-  // }
   
   const goLanding = () => {
     navigate('/', { replace: true })
   };
+
+  const handleTokenCheck = useCallback( async () => {
+    const loggedIn = localStorage.getItem('loggedIn')
+    try {
+      if (loggedIn) {
+        const user = await MainApi.checkToken();
+        await handleSavedMovies();
+        setLoggedIn(true)
+        setCurrentUser(user)
+      }
+    } catch(err) {
+      console.log(err)
+    } finally {
+      setIsLoading(false)
+    }
+  }, [])
+
+  useEffect(() => {
+    handleTokenCheck()
+  }, [handleTokenCheck])
+
+  if (isLoading) {
+    return <Preloader />
+  }
   
   return (
-    <div className='App'>
-      <CurrentUserContext.Provider value={currentUser}>
-        <Header loggedIn={loggedIn} goLanding={goLanding}/>
-        <Routes>
-          <Route path="/" element={<Landing />} />
-          <Route path="/signup" element={<Register onRegister={handleRegister} goLanding={goLanding} />} />
-          <Route path="/signin" element={<Login onLogin={handleLogin} goLanding={goLanding}/>} />
-          <Route path="/profile" element={<Profile currentUser={currentUser} onLogout={handleLogOut} />} />
-          <Route path="/movies" element={<Movies isLoading={isLoading} render={render12Movie} moviesList={moviesList} />} />
-          <Route path="/saved-movies" element={<SavedMovies render={render5Movie} moviesList={moviesList} />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-        <Footer />
-      </CurrentUserContext.Provider>
-    </div>
+    <CurrentUserContext.Provider value={currentUser}>
+      <Header loggedIn={loggedIn} goLanding={goLanding}/>
+      <Routes>
+
+        <Route path="/" element={<Landing />} />
+
+        <Route path="/signup" element={<Register onRegister={handleRegister} goLanding={goLanding} />} />
+
+        <Route path="/signin" element={<Login onLogin={handleLogin} goLanding={goLanding}/>} />
+
+        <Route path="/profile" element={<ProtectedRoute element={Profile} loggedIn={loggedIn} currentUser={currentUser} onLogout={handleLogOut} />} />
+
+        <Route path="/movies" element={<ProtectedRoute element={Movies} addFavoritMovies={addFavoritMovies} loggedIn={loggedIn} isLoading={isLoading}  />} />
+
+        <Route path="/saved-movies" element={<ProtectedRoute element={SavedMovies} loggedIn={loggedIn} savedMoviesList={savedMoviesList} />} />
+
+        <Route path="*" element={<NotFound />} />
+
+      </Routes>
+      <Footer />
+    </CurrentUserContext.Provider>
     
     
   )

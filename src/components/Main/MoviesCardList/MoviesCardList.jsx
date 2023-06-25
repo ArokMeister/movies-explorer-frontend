@@ -2,21 +2,20 @@ import MoviesCard from "../MoviesCard/MoviesCard";
 
 import "./MoviesCardList.css";
 
-function MoviesCardList({ render, isLoading }) {
+function MoviesCardList({ moviesList, isLoading, addFavoritMovies }) {
 
-  const movies = render()
   return (
     <>
       <ul className="movies__list container">
-        {movies.map(item => (
+        {moviesList.map(item => (
           <MoviesCard 
-            key={item.id}
+            key={item.id || item._id}
             movie={item}
             isLoading={isLoading}
+            addFavoritMovies={addFavoritMovies}
           />
         ))}
       </ul>
-      <button className="movies__button" type="button">Ещё</button>
     </>
     
   )

@@ -21,7 +21,7 @@ function Form ({ onSubmit, onChange, btnText, values, currentUser }) {
             id='name'
             autoComplete='off'
             style={errors.name ? {color: "#FF3055"} : {color: "#000"}}
-            value={`Username`}
+            value={values.name}
             {...register("name", {
               required: "Обязательное поле",
               minLength: {
@@ -40,7 +40,7 @@ function Form ({ onSubmit, onChange, btnText, values, currentUser }) {
             id='email'
             autoComplete='off'
             style={errors.email ? {color: "#FF3055"} : {color: "#000"}}
-            value={`test@test.ru`}
+            value={values.email}
             {...register("email", {
               required: "Обязательное поле",
               pattern: {
@@ -59,7 +59,7 @@ function Form ({ onSubmit, onChange, btnText, values, currentUser }) {
             id='password'
             autoComplete='off'
             style={errors.password ? {color: "#FF3055"} : {color: "#FF3055"}}
-            value={"password"}
+            value={values.password}
             {...register("password", {
               required: "Обязательное поле",
               minLength: {
@@ -69,7 +69,7 @@ function Form ({ onSubmit, onChange, btnText, values, currentUser }) {
               onChange: onChange
             })}
           />
-          <span className="form__error">Что-то пошло не так...</span>
+          <span className="form__error">{errors?.password?.message}</span>
           <button className="form__btn" >{btnText}</button>
         </form>
       </div>

@@ -28,10 +28,10 @@ function Navigation({ loggedIn }) {
         <nav className="navigation__landing">
           <ul className="navigation__landing-list">
             <li className="navigation__landing-item">
-              <Link className="navigation__landing-link white" to="/signup">Регистрация</Link>
+              <Link className="navigation__landing-link white" to={loggedIn ? "/movies" : "/signup"}>Регистрация</Link>
             </li>
             <li className="navigation__landing-item">
-              <Link className="navigation__landingt-link active" to="/signin">Войти</Link>
+              <Link className="navigation__landingt-link active" to={loggedIn ? "/movies" : "/signin"}>Войти</Link>
             </li>
           </ul>
         </nav>

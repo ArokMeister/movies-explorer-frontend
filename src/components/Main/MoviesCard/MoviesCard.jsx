@@ -4,12 +4,13 @@ import { useLocation } from "react-router-dom";
 import "./MoviesCard.css";
 import Preloader from "../Preloader/Preloader";
 
-function MoviesCard({ movie, isLoading }) {
+function MoviesCard({ movie, isLoading, addFavoritMovies }) {
   const [liked, setLiked] = useState(false);
   const location = useLocation();
 
   const handleClick = () => {
-    setLiked(!liked) 
+    setLiked(!liked);
+    addFavoritMovies(movie);
   }
 
   function changeButton() {
@@ -21,13 +22,24 @@ function MoviesCard({ movie, isLoading }) {
     }
   }
 
+  function changeURL() {
+    if (location.pathname === "/movies") {
+      return (`https://api.nomoreparties.co${movie.image.url}`)
+    }
+    if (location.pathname === "/saved-movies") {
+      return (`${movie.image}`)
+    }
+  }
+
   function formatTime(minutes) {
     let hours = Math.floor(minutes / 60);
     let mins = minutes % 60;
     if (mins === 0) { // Проверяем, делится ли минуты нацело
       return `${hours}ч`; // Возвращаем только часы
+    } else if (hours === 0) {
+      return `${mins}м`; // Иначе возвращаем часы и минуты
     } else {
-      return `${hours}ч ${mins}м`; // Иначе возвращаем часы и минуты
+      return `${hours}ч ${mins}м`
     }
   }
 
@@ -37,7 +49,7 @@ function MoviesCard({ movie, isLoading }) {
   
   return (
     <li className="card">
-      <img className="card__image" src={`https://api.nomoreparties.co/${movie.image.url}`} alt="Изображение фильма" />
+      <img className="card__image" src={changeURL()} alt={movie.nameRU} />
       <button className={changeButton()} onClick={handleClick} type="button" aria-label="Кнопка лайка" />
       <div className="card__info">
         <p className="card__title">{movie.nameRU}</p>

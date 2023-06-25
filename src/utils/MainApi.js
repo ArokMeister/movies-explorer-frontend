@@ -1,4 +1,5 @@
-export const BASE_URL = 'https://api.movie-explorer.nomoredomains.rocks';
+// export const BASE_URL = 'https://api.movie-explorer.nomoredomains.rocks';
+export const BASE_URL = 'http://localhost:3000';
 
 function makeRequest(url, method, body) {
   const headers = {
@@ -51,4 +52,12 @@ export const clearToken = () => {
 
 export const updateUser = (name, email) => {
   return makeRequest('/users/me', 'PATH', { name, email })
+}
+
+export const getSavedMovies = () => {
+  return makeRequest('/movies', 'GET', undefined)
+}
+
+export const addFavorit = ({country, director, duration, year, description, image, trailerLink, thumbnail, movieId, nameRU, nameEN}) => {
+  return makeRequest('/movies', 'POST', { country, director, duration, year, description, image, trailerLink, thumbnail, movieId, nameRU, nameEN })
 }
