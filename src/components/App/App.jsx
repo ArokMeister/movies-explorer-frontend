@@ -35,7 +35,6 @@ function App () {
   }
 
   const addFavoritMovies = async (movie) => {
-    console.log(movie.image.url)
     try {
       const favorit = await MainApi.addFavorit({
         ...movie,
@@ -44,6 +43,15 @@ function App () {
         movieId: movie.id
       })
       setSavedMoviesList([...savedMoviesList, favorit])
+    } catch(err) {
+      console.log(err)
+    }
+  }
+
+  const deleteFavoritMovies = async (movieId) => {
+    try {
+      await MainApi.deleteMovies(movieId);
+      savedMoviesList((savedMoviesList) => savedMoviesList.filter(movie => movie._id !== movieId))
     } catch(err) {
       console.log(err)
     }
@@ -126,7 +134,7 @@ function App () {
 
         <Route path="/movies" element={<ProtectedRoute element={Movies} addFavoritMovies={addFavoritMovies} loggedIn={loggedIn} isLoading={isLoading}  />} />
 
-        <Route path="/saved-movies" element={<ProtectedRoute element={SavedMovies} loggedIn={loggedIn} savedMoviesList={savedMoviesList} />} />
+        <Route path="/saved-movies" element={<ProtectedRoute element={SavedMovies} deleteFavoritMovies={deleteFavoritMovies} loggedIn={loggedIn} savedMoviesList={savedMoviesList} />} />
 
         <Route path="*" element={<NotFound />} />
 

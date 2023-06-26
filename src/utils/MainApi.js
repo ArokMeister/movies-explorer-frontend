@@ -60,4 +60,8 @@ export const getSavedMovies = () => {
 
 export const addFavorit = ({country, director, duration, year, description, image, trailerLink, thumbnail, movieId, nameRU, nameEN}) => {
   return makeRequest('/movies', 'POST', { country, director, duration, year, description, image, trailerLink, thumbnail, movieId, nameRU, nameEN })
+
+}
+export const deleteMovies = (movieId) => {
+  return makeRequest(`/movies/${movieId}`, 'DELETE', undefined)
 }

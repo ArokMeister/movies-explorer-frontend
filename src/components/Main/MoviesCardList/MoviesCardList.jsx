@@ -2,7 +2,7 @@ import MoviesCard from "../MoviesCard/MoviesCard";
 
 import "./MoviesCardList.css";
 
-function MoviesCardList({ moviesList, isLoading, addFavoritMovies }) {
+function MoviesCardList({ moviesList, isLoading, addFavoritMovies, deleteFavoritMovies }) {
 
   return (
     <>
@@ -13,6 +13,7 @@ function MoviesCardList({ moviesList, isLoading, addFavoritMovies }) {
             movie={item}
             isLoading={isLoading}
             addFavoritMovies={addFavoritMovies}
+            deleteFavoritMovies={deleteFavoritMovies}
           />
         ))}
       </ul>

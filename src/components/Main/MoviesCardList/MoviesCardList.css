@@ -8,7 +8,7 @@
   row-gap: 38px;
   list-style: none;
   padding: 0;
-  margin: 0 auto;
+  margin: 0 auto 50px;
 }
 
 @media screen and (max-width: 768px) {

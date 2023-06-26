@@ -4,13 +4,21 @@ import { useLocation } from "react-router-dom";
 import "./MoviesCard.css";
 import Preloader from "../Preloader/Preloader";
 
-function MoviesCard({ movie, isLoading, addFavoritMovies }) {
+function MoviesCard({ movie, isLoading, addFavoritMovies, deleteFavoritMovies }) {
   const [liked, setLiked] = useState(false);
   const location = useLocation();
 
   const handleClick = () => {
-    setLiked(!liked);
-    addFavoritMovies(movie);
+    // if (location.pathname === '/movies')
+    // setLiked(!liked);
+    // addFavoritMovies(movie);
+    // if (location.pathname === '/saved-movies') {
+      deleteFavoritMovies(movie._id)
+    // } else {
+    //   setLiked(!liked);
+    //   addFavoritMovies(movie);
+    // }
+      
   }
 
   function changeButton() {
