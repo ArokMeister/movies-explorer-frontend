@@ -10,14 +10,15 @@ function Movies({ isLoading, addFavoritMovies }) {
 
   const [moviesList, setMoviesList] = useState([]);
   const [filtredMoviesList, setFiltredMoviesList] = useState([]);
-  const [savedMovies, setSavedMovies] = useState([]);
-  const [shortMovie, setShortMovie] = useState(false);
+
+  const [isCheckboxMoviesActive, setIsCheckboxMoviesActive] = useState(false);
+
   const { values, handleChange, setValues } = useCastomForm();
 
-
-  const filtredShortMovies = () => {
-    setShortMovie(!shortMovie)
-    localStorage.setItem('ShortMovie', !shortMovie)
+  const handleCheckbox = () => {
+    const updateState = !isCheckboxMoviesActive;
+    setIsCheckboxMoviesActive(updateState)
+    localStorage.setItem('MoviesCheckbox', updateState)
   }
 
   const saveSearch = () => {
@@ -46,12 +47,13 @@ function Movies({ isLoading, addFavoritMovies }) {
   const renderMovies = useCallback(() => {
     const keyword = getSearch()
     const filtredMovies = moviesList.filter(movie => movie.nameRU.includes(keyword) || movie.nameEN.includes(keyword))
+    localStorage.setItem('FiltredMovies', JSON.stringify(filtredMovies))
     setFiltredMoviesList(filtredMovies)
-    if (shortMovie) {
-      const filtredShortMovies = moviesList.filter(movie => movie.duration <= 40)
+    if (isCheckboxMoviesActive) {
+      const filtredShortMovies = filtredMovies.filter(movie => movie.duration <= 40)
       setFiltredMoviesList(filtredShortMovies)
     }
-  }, [moviesList, shortMovie])
+  }, [moviesList, isCheckboxMoviesActive])
   
   const handleSubmit = async (evt) => {
     evt.preventDefault();
@@ -62,12 +64,28 @@ function Movies({ isLoading, addFavoritMovies }) {
 
   useEffect(() => {
     renderMovies()
-  }, [renderMovies, shortMovie])
+  }, [renderMovies, isCheckboxMoviesActive])
+
+  useEffect(() => {
+    const storedMovies = localStorage.getItem('Movies');
+    if (storedMovies) {
+      setMoviesList(JSON.parse(storedMovies));
+      const stateCheckbox = localStorage.getItem('MoviesCheckbox') === 'true'
+      setIsCheckboxMoviesActive(stateCheckbox)
+      renderMovies()
+    } else {
+      return;
+    }
+  }, []);
+
+  // useEffect(() => {
+  //   localStorage.setItem('FiltredMovies', JSON.stringify(filtredMoviesList))
+  // }, [filtredMoviesList])
 
 
   return (
     <main className="movies">
-      <SearchForm inputValues={values} onChange={handleChange} onSubmit={handleSubmit} onShort={filtredShortMovies}/>
+      <SearchForm inputValues={values} onChange={handleChange} onSubmit={handleSubmit} onShort={handleCheckbox} checked={isCheckboxMoviesActive}/>
       <MoviesCardList moviesList={filtredMoviesList} isLoading={isLoading} addFavoritMovies={addFavoritMovies} />
       <button className="movies__button" type="button">Ещё</button>
     </main>

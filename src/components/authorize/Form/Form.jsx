@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 
 import "./Form.css";
 
-function Form ({ onSubmit, onChange, btnText, values, currentUser }) {
+function Form ({ onSubmit, onChange, btnText, values, onClick, inputState, buttonState, saveButtonState }) {
 
   const { register, formState: { errors }, handleSubmit } = useForm({ mode: "onChange" })
 
@@ -125,7 +125,7 @@ function Form ({ onSubmit, onChange, btnText, values, currentUser }) {
   if (location.pathname === "/profile") {
     return (
       <div className="form__container">
-        <form className="form form__profile" onSubmit={handleSubmit(onSubmit)} noValidate>
+        <form className="form form__profile" onSubmit={onSubmit} noValidate>
           <label className="form__label-profile">
             Имя
             <input
@@ -133,9 +133,10 @@ function Form ({ onSubmit, onChange, btnText, values, currentUser }) {
               type='text'
               name='name'
               id='name'
+              disabled={inputState}
               autoComplete='off'
               style={errors.name ? {color: "#FF3055"} : {color: "#000"}}
-              value={currentUser.name}
+              value={values.name}
               {...register("name", {
                 required: "Обязательное поле",
                 minLength: {
@@ -146,6 +147,7 @@ function Form ({ onSubmit, onChange, btnText, values, currentUser }) {
               })}
             />
           </label>
+          <span className="form__error center">{errors?.name?.message}</span>
           <span className="form__line" />
           <label className="form__label-profile">
             E-mail
@@ -154,9 +156,10 @@ function Form ({ onSubmit, onChange, btnText, values, currentUser }) {
               type='email'
               name='email'
               id='email'
+              disabled={inputState}
               autoComplete='off'
               style={errors.email ? {color: "#FF3055"} : {color: "#000"}}
-              value={currentUser.email}
+              value={values.email}
               {...register("email", {
                 required: "Обязательное поле",
                 pattern: {
@@ -167,8 +170,9 @@ function Form ({ onSubmit, onChange, btnText, values, currentUser }) {
               })}
             />
           </label>
-          <span className="form__error center">{errors?.message}</span>
-          <button className="form__btn-profile">{btnText}</button>
+          <span className="form__error center">{errors?.email?.message}</span>
+          <button className={`form__btn-profile-save ${buttonState ? "" : "hide" }`} disabled={saveButtonState}>Сохранить</button>
+          <button className="form__btn-profile" onClick={onClick} type="button" >{btnText}</button>
         </form>
       </div>
     )

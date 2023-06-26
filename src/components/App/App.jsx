@@ -24,11 +24,12 @@ function App () {
   const [isLoading, setIsLoading] = useState(true);
 
   const navigate = useNavigate();
-  
+  console.log(currentUser, 'App')
   const handleSavedMovies = async () => {
     try {
       const savedMovies = await MainApi.getSavedMovies();
       setSavedMoviesList(savedMovies)
+      console.log(savedMoviesList)
     } catch(err) {
       console.log(err)
     }
@@ -51,7 +52,19 @@ function App () {
   const deleteFavoritMovies = async (movieId) => {
     try {
       await MainApi.deleteMovies(movieId);
-      savedMoviesList((savedMoviesList) => savedMoviesList.filter(movie => movie._id !== movieId))
+      setSavedMoviesList(savedMoviesList.filter(movie => movie._id !== movieId))
+    } catch(err) {
+      console.log(err)
+    }
+  }
+
+  async function updateUser(name, email) {
+    try {
+      const { user } = await MainApi.updateUser(name, email);
+      if (user) {
+        console.log(user, "updateUser")
+        setCurrentUser(user)
+      }
     } catch(err) {
       console.log(err)
     }
@@ -130,7 +143,7 @@ function App () {
 
         <Route path="/signin" element={<Login onLogin={handleLogin} goLanding={goLanding}/>} />
 
-        <Route path="/profile" element={<ProtectedRoute element={Profile} loggedIn={loggedIn} currentUser={currentUser} onLogout={handleLogOut} />} />
+        <Route path="/profile" element={<ProtectedRoute element={Profile} loggedIn={loggedIn} currentUser={currentUser} updateUser={updateUser} onLogout={handleLogOut} setCurrentUser={setCurrentUser} />} />
 
         <Route path="/movies" element={<ProtectedRoute element={Movies} addFavoritMovies={addFavoritMovies} loggedIn={loggedIn} isLoading={isLoading}  />} />
 

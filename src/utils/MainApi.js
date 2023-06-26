@@ -51,7 +51,7 @@ export const clearToken = () => {
 }
 
 export const updateUser = (name, email) => {
-  return makeRequest('/users/me', 'PATH', { name, email })
+  return makeRequest('/users/me', 'PATCH', { name, email })
 }
 
 export const getSavedMovies = () => {

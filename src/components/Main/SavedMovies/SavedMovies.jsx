@@ -1,21 +1,46 @@
 import SearchForm from "../SearchForm/SearchForm"
 import MoviesCardList from "../MoviesCardList/MoviesCardList";
 import { useCastomForm, useFormWithValidation } from "../../../utils/hook/useForm";
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 
 function SavedMovies({ savedMoviesList, deleteFavoritMovies }) {
   
-  const [filtredSavedMovies, setFiltredSavedMovies] = useState(savedMoviesList)
+  const [savedSortMovies, setSavedSortMovies] = useState(savedMoviesList)
+
+  const [isShortSavedMovies, setIsShortSavedMovies] = useState([]);
+
+  // const [shortMovie, setShortMovie] = useState(false);
+
+  const [isCheckboxMoviesActive, setIsCheckboxMoviesActive] = useState(false);
+
   const { values, handleChange, setValues } = useCastomForm();
 
-  const renderMovies = () => {
-    const keyword = values.search
-    const filtredMovies = savedMoviesList.filter(movie => movie.nameRU.includes(keyword) || movie.nameEN.includes(keyword)) 
-    setFiltredSavedMovies(filtredMovies)
+  const saveSearch = () => {
+    localStorage.setItem('SaveSearch', values.search)
   }
+
+  const getSearch = () => {
+    return localStorage.getItem('SaveSearch')
+  }
+
+  const handleCheckbox = () => {
+    const updateState = !isCheckboxMoviesActive;
+    setIsCheckboxMoviesActive(updateState)
+  }
+
+  const renderMovies = useCallback(() => {
+    const keyword = getSearch();
+    const filtredMovies = savedMoviesList.filter(movie => movie.nameRU.includes(keyword) || movie.nameEN.includes(keyword)) 
+    setSavedSortMovies(filtredMovies)
+    if (isCheckboxMoviesActive) {
+      const filtredShortMovies = filtredMovies.filter(movie => movie.duration <= 40)
+      setSavedSortMovies(filtredShortMovies)
+    }
+  }, [isCheckboxMoviesActive, savedMoviesList])
   
-  const handleSubmit = async (evt) => {
+  const handleSubmit = (evt) => {
     evt.preventDefault();
+    saveSearch()
     renderMovies()
   }
 
@@ -36,14 +61,14 @@ function SavedMovies({ savedMoviesList, deleteFavoritMovies }) {
   //   renderMovies()
   // }
 
-  // useEffect(() => {
-  //   renderMovies()
-  // }, [renderMovies, shortMovie])
+  useEffect(() => {
+    renderMovies()
+  }, [renderMovies, isCheckboxMoviesActive])
 
   return (
     <main className="saved-movies">
-      <SearchForm inputValues={values} onChange={handleChange} onSubmit={handleSubmit} />
-      <MoviesCardList moviesList={filtredSavedMovies} deleteFavoritMovies={deleteFavoritMovies}/>
+      <SearchForm inputValues={values} onChange={handleChange} onSubmit={handleSubmit} onShort={handleCheckbox} />
+      <MoviesCardList moviesList={savedSortMovies} deleteFavoritMovies={deleteFavoritMovies}/>
     </main>
   )
 }

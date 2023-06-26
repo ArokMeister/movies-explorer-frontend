@@ -1,7 +1,7 @@
 import FilterCheckbox from "../FilterCheckbox/FilterCheckbox";
 import "./SearchForm.css";
 
-function SearchForm({ inputValues, onChange, onSubmit, onShort }) {
+function SearchForm({ inputValues, onChange, onSubmit, onShort, checked }) {
 
   // console.log(values)
   return (
@@ -19,7 +19,7 @@ function SearchForm({ inputValues, onChange, onSubmit, onShort }) {
           />
           <button className="search__btn" type="submit" >Найти</button>
       </form>
-      <FilterCheckbox onShort={onShort} />
+      <FilterCheckbox onShort={onShort} checked={checked}/>
     </div>
   )
 }

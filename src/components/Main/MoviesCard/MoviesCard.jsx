@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 
 import "./MoviesCard.css";
@@ -9,16 +9,14 @@ function MoviesCard({ movie, isLoading, addFavoritMovies, deleteFavoritMovies })
   const location = useLocation();
 
   const handleClick = () => {
-    // if (location.pathname === '/movies')
-    // setLiked(!liked);
-    // addFavoritMovies(movie);
-    // if (location.pathname === '/saved-movies') {
+    if (location.pathname === '/movies') {
+      setLiked(!liked);
+      addFavoritMovies(movie);
+    }
+    if (location.pathname === '/saved-movies') {
+      setLiked(!liked);
       deleteFavoritMovies(movie._id)
-    // } else {
-    //   setLiked(!liked);
-    //   addFavoritMovies(movie);
-    // }
-      
+    } 
   }
 
   function changeButton() {
@@ -51,6 +49,10 @@ function MoviesCard({ movie, isLoading, addFavoritMovies, deleteFavoritMovies })
     }
   }
 
+  useEffect(() => {
+    setLiked()
+  }, [setLiked])
+
   if (isLoading) {
     return <Preloader />
   }
@@ -58,7 +60,7 @@ function MoviesCard({ movie, isLoading, addFavoritMovies, deleteFavoritMovies })
   return (
     <li className="card">
       <img className="card__image" src={changeURL()} alt={movie.nameRU} />
-      <button className={changeButton()} onClick={handleClick} type="button" aria-label="Кнопка лайка" />
+      <button className={changeButton()} onClick={handleClick} type="button" aria-label="Функциональная кнопка лайка и удаления" />
       <div className="card__info">
         <p className="card__title">{movie.nameRU}</p>
         <p className="card__duration">{formatTime(movie.duration)}</p>
