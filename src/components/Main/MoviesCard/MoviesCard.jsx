@@ -4,8 +4,9 @@ import { useLocation } from "react-router-dom";
 import "./MoviesCard.css";
 import Preloader from "../Preloader/Preloader";
 
-function MoviesCard({ movie, isLoading, addFavoritMovies, deleteFavoritMovies }) {
+function MoviesCard({ movie, isLoading, addFavoritMovies, deleteFavoritMovies, savedMoviesList }) {
   const [liked, setLiked] = useState(false);
+  const [isLiked, setIsLiked] = useState(false);
   const location = useLocation();
 
   const handleClick = () => {
@@ -49,23 +50,34 @@ function MoviesCard({ movie, isLoading, addFavoritMovies, deleteFavoritMovies })
     }
   }
 
+
+  // useEffect(() => {
+  //   const isSaved = savedMoviesList.some(savedMovie => savedMovie.id === movie.id)
+  //   setIsLiked(isSaved)
+  // }, [movie])
+  
+
   useEffect(() => {
     setLiked()
   }, [setLiked])
 
-  if (isLoading) {
-    return <Preloader />
-  }
-  
+    
   return (
-    <li className="card">
-      <img className="card__image" src={changeURL()} alt={movie.nameRU} />
-      <button className={changeButton()} onClick={handleClick} type="button" aria-label="Функциональная кнопка лайка и удаления" />
-      <div className="card__info">
-        <p className="card__title">{movie.nameRU}</p>
-        <p className="card__duration">{formatTime(movie.duration)}</p>
-      </div>
-    </li>
+    <>
+      {isLoading ? (
+        <Preloader />
+      ) : (
+        <li className="card">
+        <img className="card__image" src={changeURL()} alt={movie.nameRU} />
+        <button className={changeButton()} onClick={handleClick} type="button" aria-label="Функциональная кнопка лайка и удаления" />
+          <div className="card__info">
+            <p className="card__title">{movie.nameRU}</p>
+            <p className="card__duration">{formatTime(movie.duration)}</p>
+          </div>
+        </li>
+      )}
+    </>
+    
   )
 }
 

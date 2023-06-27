@@ -1,19 +1,25 @@
+import { useEffect, useState, useCallback } from "react";
+import { useCastomForm } from "../../../utils/hook/useForm";
 import SearchForm from "../SearchForm/SearchForm"
 import MoviesCardList from "../MoviesCardList/MoviesCardList";
 import movies from '../../../utils/MoviesApi';
-import { useCastomForm, useFormWithValidation } from "../../../utils/hook/useForm";
-import { useEffect, useState, useCallback } from "react";
+import { PC, TAB, MOBILE, 
+  RENDER_CARD_ON_PC, RENDER_CARD_ON_TAB, RENDER_CARD_ON_MOBILE,
+  RENDER_IF_PUSH_MORE_PC, RENDER_IF_PUSH_MORE_TAB, RENDER_IF_PUSH_MORE_MOBILE } from "../../../utils/constants";
 
 import './Movies.css';
 
-function Movies({ isLoading, addFavoritMovies }) {
+function Movies({ isLoading, addFavoritMovies, savedMoviesList }) {
 
   const [moviesList, setMoviesList] = useState([]);
   const [filtredMoviesList, setFiltredMoviesList] = useState([]);
 
   const [isCheckboxMoviesActive, setIsCheckboxMoviesActive] = useState(false);
 
-  const { values, handleChange, setValues } = useCastomForm();
+  const [cardsCount, setCardsCount] = useState(0);
+  const [maxCardsCount, setMaxCardsCount] = useState(0);
+
+  const { values, handleChange } = useCastomForm();
 
   const handleCheckbox = () => {
     const updateState = !isCheckboxMoviesActive;
@@ -53,7 +59,24 @@ function Movies({ isLoading, addFavoritMovies }) {
       const filtredShortMovies = filtredMovies.filter(movie => movie.duration <= 40)
       setFiltredMoviesList(filtredShortMovies)
     }
+    if (window.innerWidth >= PC) {
+      setMaxCardsCount(RENDER_CARD_ON_PC);
+    } else if (window.innerWidth >= TAB) {
+      setMaxCardsCount(RENDER_CARD_ON_TAB);
+    } else if (window.innerWidth <= MOBILE){
+      setMaxCardsCount(RENDER_CARD_ON_MOBILE);
+    }
   }, [moviesList, isCheckboxMoviesActive])
+
+  const handleLoadMore = () => {
+    if (window.innerWidth >= PC) {
+      setCardsCount(cardsCount + RENDER_IF_PUSH_MORE_PC);
+    } else if (window.innerWidth >= TAB) {
+      setCardsCount(cardsCount + RENDER_IF_PUSH_MORE_TAB);
+    } else if (window.innerWidth <= MOBILE) {
+      setCardsCount(cardsCount + RENDER_IF_PUSH_MORE_MOBILE);
+    }
+  }
   
   const handleSubmit = async (evt) => {
     evt.preventDefault();
@@ -67,6 +90,12 @@ function Movies({ isLoading, addFavoritMovies }) {
   }, [renderMovies, isCheckboxMoviesActive])
 
   useEffect(() => {
+    setCardsCount(maxCardsCount);
+    window.addEventListener("resize", renderMovies);
+    return () => window.removeEventListener("resize", renderMovies);
+  }, [maxCardsCount]);
+
+  useEffect(() => {
     const storedMovies = localStorage.getItem('Movies');
     if (storedMovies) {
       setMoviesList(JSON.parse(storedMovies));
@@ -78,16 +107,13 @@ function Movies({ isLoading, addFavoritMovies }) {
     }
   }, []);
 
-  // useEffect(() => {
-  //   localStorage.setItem('FiltredMovies', JSON.stringify(filtredMoviesList))
-  // }, [filtredMoviesList])
-
-
   return (
     <main className="movies">
       <SearchForm inputValues={values} onChange={handleChange} onSubmit={handleSubmit} onShort={handleCheckbox} checked={isCheckboxMoviesActive}/>
-      <MoviesCardList moviesList={filtredMoviesList} isLoading={isLoading} addFavoritMovies={addFavoritMovies} />
-      <button className="movies__button" type="button">Ещё</button>
+      <MoviesCardList moviesList={filtredMoviesList.slice(0, cardsCount)} savedMoviesList={savedMoviesList} isLoading={isLoading} addFavoritMovies={addFavoritMovies} />
+      {filtredMoviesList.length <= cardsCount ? null : (
+        <button className="movies__button" type="button" onClick={handleLoadMore}>Ещё</button>
+      )}
     </main>
   )
 }

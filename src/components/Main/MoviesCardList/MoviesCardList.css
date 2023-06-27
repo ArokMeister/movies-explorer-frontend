@@ -1,5 +1,6 @@
 .movies__list {
   position: relative;
+  max-width: 1140px;
   display: grid;
   grid-template-columns: repeat(auto-fill, 270px);
   justify-content: center;
@@ -13,7 +14,7 @@
 
 @media screen and (max-width: 768px) {
   .movies__list {
-    grid-template-columns: repeat(auto-fill, 339px);
+    grid-template-columns: repeat(auto-fill, minmax(300px, 339px));
     gap: 30px;
   }
 }

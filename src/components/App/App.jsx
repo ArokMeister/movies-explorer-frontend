@@ -12,19 +12,16 @@ import SavedMovies from '../Main/SavedMovies/SavedMovies';
 import NotFound from '../Main/NotFound/NotFound';
 import Footer from '../Footer/Footer';
 import * as MainApi from '../../utils/MainApi';
-import movies from '../../utils/MoviesApi';
 import Preloader from '../Main/Preloader/Preloader';
 
 function App () {
   const [savedMoviesList, setSavedMoviesList] = useState([]);
-  // const [currentUser, setCurrentUser] = useState(JSON.parse(localStorage.getItem("currentUser")) || {});
-  // const [loggedIn, setLoggedIn] = useState(localStorage.getItem("loggedIn") === "true" || false);
   const [currentUser, setCurrentUser] = useState({});
   const [loggedIn, setLoggedIn] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
   const navigate = useNavigate();
-  console.log(currentUser, 'App')
+  
   const handleSavedMovies = async () => {
     try {
       const savedMovies = await MainApi.getSavedMovies();
@@ -71,11 +68,9 @@ function App () {
   }
  
   async function handleLogin(email, password) {
-
     try {
       const { user } = await MainApi.authorize(email, password);
       localStorage.setItem('loggedIn', 'true');
-      // localStorage.setItem("currentUser", JSON.stringify(user))
       setLoggedIn(true);
       setCurrentUser(user);
       handleSavedMovies()
@@ -137,17 +132,46 @@ function App () {
       <Header loggedIn={loggedIn} goLanding={goLanding}/>
       <Routes>
 
-        <Route path="/" element={<Landing />} />
+        <Route path="/" element={
+          <Landing />
+        }/>
 
-        <Route path="/signup" element={<Register onRegister={handleRegister} goLanding={goLanding} />} />
+        <Route path="/signup" element={
+          <Register onRegister={handleRegister} goLanding={goLanding} />
+        }/>
 
-        <Route path="/signin" element={<Login onLogin={handleLogin} goLanding={goLanding}/>} />
+        <Route path="/signin" element={
+          <Login onLogin={handleLogin} goLanding={goLanding} />
+        }/>
 
-        <Route path="/profile" element={<ProtectedRoute element={Profile} loggedIn={loggedIn} currentUser={currentUser} updateUser={updateUser} onLogout={handleLogOut} setCurrentUser={setCurrentUser} />} />
+        <Route path="/profile" element={
+          <ProtectedRoute 
+            element={Profile} 
+            loggedIn={loggedIn} 
+            currentUser={currentUser} 
+            updateUser={updateUser} 
+            onLogout={handleLogOut} 
+           />} 
+        />
 
-        <Route path="/movies" element={<ProtectedRoute element={Movies} addFavoritMovies={addFavoritMovies} loggedIn={loggedIn} isLoading={isLoading}  />} />
+        <Route path="/movies" element={
+          <ProtectedRoute 
+            element={Movies} 
+            addFavoritMovies={addFavoritMovies} 
+            loggedIn={loggedIn} 
+            isLoading={isLoading}
+            savedMoviesList={savedMoviesList}
+          />} 
+        />
 
-        <Route path="/saved-movies" element={<ProtectedRoute element={SavedMovies} deleteFavoritMovies={deleteFavoritMovies} loggedIn={loggedIn} savedMoviesList={savedMoviesList} />} />
+        <Route path="/saved-movies" element={
+          <ProtectedRoute 
+            element={SavedMovies} 
+            deleteFavoritMovies={deleteFavoritMovies} 
+            loggedIn={loggedIn} 
+            savedMoviesList={savedMoviesList} 
+          />} 
+        />
 
         <Route path="*" element={<NotFound />} />
 
