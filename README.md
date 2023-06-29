@@ -2,7 +2,7 @@
 
 <h2>Figma Maket</h2> - <a href="https://disk.yandex.ru/d/NVyYyjerN5-wPA">ссылка на Яндекс.Диск</a>
 
-<a href="best-movies-explorer.nomoreparties.sbs">Deploy</a>
+<a href="https://best-movies-explorer.nomoreparties.sbs">Deploy</a>
 
 <h3>Server IP 130.193.40.93</h3>
 <h3>Server domen api.movie-explorer.nomoredomains.rocks</h3>
