@@ -3,13 +3,10 @@ import { useCastomForm } from "../../../utils/hook/useForm";
 import SearchForm from "../SearchForm/SearchForm"
 import MoviesCardList from "../MoviesCardList/MoviesCardList";
 import movies from '../../../utils/MoviesApi';
-import { PC, TAB, MOBILE, 
-  RENDER_CARD_ON_PC, RENDER_CARD_ON_TAB, RENDER_CARD_ON_MOBILE,
-  RENDER_IF_PUSH_MORE_PC, RENDER_IF_PUSH_MORE_TAB, RENDER_IF_PUSH_MORE_MOBILE } from "../../../utils/constants";
 
 import './Movies.css';
 
-function Movies({ isLoading, addFavoritMovies, savedMoviesList }) {
+function Movies({ isLoading, addFavoritMovies, deleteBeatMovies, savedMoviesList }) {
 
   const [moviesList, setMoviesList] = useState([]);
   const [filtredMoviesList, setFiltredMoviesList] = useState([]);
@@ -59,22 +56,24 @@ function Movies({ isLoading, addFavoritMovies, savedMoviesList }) {
       const filtredShortMovies = filtredMovies.filter(movie => movie.duration <= 40)
       setFiltredMoviesList(filtredShortMovies)
     }
-    if (window.innerWidth >= PC) {
-      setMaxCardsCount(RENDER_CARD_ON_PC);
-    } else if (window.innerWidth >= TAB) {
-      setMaxCardsCount(RENDER_CARD_ON_TAB);
-    } else if (window.innerWidth <= MOBILE){
-      setMaxCardsCount(RENDER_CARD_ON_MOBILE);
+    if (window.innerWidth >= 1280) {
+      setMaxCardsCount(12);
+    } else if (window.innerWidth >= 768) {
+      setMaxCardsCount(8);
+    } else if (window.innerWidth >= 480){
+      setMaxCardsCount(5);
     }
   }, [moviesList, isCheckboxMoviesActive])
 
   const handleLoadMore = () => {
-    if (window.innerWidth >= PC) {
-      setCardsCount(cardsCount + RENDER_IF_PUSH_MORE_PC);
-    } else if (window.innerWidth >= TAB) {
-      setCardsCount(cardsCount + RENDER_IF_PUSH_MORE_TAB);
-    } else if (window.innerWidth <= MOBILE) {
-      setCardsCount(cardsCount + RENDER_IF_PUSH_MORE_MOBILE);
+    if (window.innerWidth >= 1280) {
+      setCardsCount(cardsCount + 4);
+    } else if (window.innerWidth >= 1150) {
+      setCardsCount(cardsCount + 3)
+    } else if (window.innerWidth >= 768) {
+      setCardsCount(cardsCount + 2);
+    } else if (window.innerWidth >= 480) {
+      setCardsCount(cardsCount + 1);
     }
   }
   
@@ -93,7 +92,7 @@ function Movies({ isLoading, addFavoritMovies, savedMoviesList }) {
     setCardsCount(maxCardsCount);
     window.addEventListener("resize", renderMovies);
     return () => window.removeEventListener("resize", renderMovies);
-  }, [maxCardsCount]);
+  }, [maxCardsCount, renderMovies]);
 
   useEffect(() => {
     const storedMovies = localStorage.getItem('Movies');
@@ -110,7 +109,8 @@ function Movies({ isLoading, addFavoritMovies, savedMoviesList }) {
   return (
     <main className="movies">
       <SearchForm inputValues={values} onChange={handleChange} onSubmit={handleSubmit} onShort={handleCheckbox} checked={isCheckboxMoviesActive}/>
-      <MoviesCardList moviesList={filtredMoviesList.slice(0, cardsCount)} savedMoviesList={savedMoviesList} isLoading={isLoading} addFavoritMovies={addFavoritMovies} />
+      {filtredMoviesList?.length === 0 ? <p className="movies__notfound">Ничего не найдено</p> : null}
+      <MoviesCardList moviesList={filtredMoviesList.slice(0, cardsCount)} savedMoviesList={savedMoviesList} addFavoritMovies={addFavoritMovies} deleteBeatMovies={deleteBeatMovies} />
       {filtredMoviesList.length <= cardsCount ? null : (
         <button className="movies__button" type="button" onClick={handleLoadMore}>Ещё</button>
       )}

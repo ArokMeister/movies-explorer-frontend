@@ -2,6 +2,7 @@
   min-width: 320px;
   font-family: 'Inter', 'Helvatica', sans-serif;
   display: flex;
+  flex-grow: 1;
   flex-direction: column;
   justify-content: center;
 }
@@ -9,7 +10,12 @@
 .root {
   display: flex;
   flex-direction: column;
+  flex-grow: 1;
   min-height: 100vh;
+}
+
+.root:nth-child(3) {
+
 }
 
 .container {

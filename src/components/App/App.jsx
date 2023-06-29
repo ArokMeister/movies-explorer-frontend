@@ -13,6 +13,7 @@ import NotFound from '../Main/NotFound/NotFound';
 import Footer from '../Footer/Footer';
 import * as MainApi from '../../utils/MainApi';
 import Preloader from '../Main/Preloader/Preloader';
+import { imageURLBeatFilms } from '../../utils/constants';
 
 function App () {
   const [savedMoviesList, setSavedMoviesList] = useState([]);
@@ -22,22 +23,21 @@ function App () {
 
   const navigate = useNavigate();
   
-  const handleSavedMovies = async () => {
+  const handleSavedMovies = useCallback(async () => {
     try {
       const savedMovies = await MainApi.getSavedMovies();
       setSavedMoviesList(savedMovies)
-      console.log(savedMoviesList)
     } catch(err) {
       console.log(err)
     }
-  }
+  }, [])
 
   const addFavoritMovies = async (movie) => {
     try {
       const favorit = await MainApi.addFavorit({
         ...movie,
-        image: `https://api.nomoreparties.co${movie.image.url}`, 
-        thumbnail: `https://api.nomoreparties.co${movie.image.formats.thumbnail.url}`, 
+        image: `${imageURLBeatFilms}${movie.image.url}`, 
+        thumbnail: `${imageURLBeatFilms}${movie.image.formats.thumbnail.url}`, 
         movieId: movie.id
       })
       setSavedMoviesList([...savedMoviesList, favorit])
@@ -50,6 +50,15 @@ function App () {
     try {
       await MainApi.deleteMovies(movieId);
       setSavedMoviesList(savedMoviesList.filter(movie => movie._id !== movieId))
+    } catch(err) {
+      console.log(err)
+    }
+  }
+
+  const deleteBeatMovies = async (beatId) => {
+    try {
+      const { _id } = savedMoviesList.find(movie => movie.movieId === beatId);
+      await deleteFavoritMovies(_id);
     } catch(err) {
       console.log(err)
     }
@@ -70,10 +79,10 @@ function App () {
   async function handleLogin(email, password) {
     try {
       const { user } = await MainApi.authorize(email, password);
+      await handleSavedMovies()
       localStorage.setItem('loggedIn', 'true');
       setLoggedIn(true);
       setCurrentUser(user);
-      handleSavedMovies()
       navigate ('/movies', { replace: true });
     } catch(err) {
       console.log(err)
@@ -89,14 +98,15 @@ function App () {
     }
   }
 
-  function handleLogOut() {
-    MainApi.clearToken()
-      .then(() => {
-        setLoggedIn(false)
-        localStorage.clear()
-        navigate('/', { replace: true })
-      })
-      .catch(err => console.log(err))
+  const handleLogOut = async () => {
+    try {
+      await MainApi.clearToken();
+      setLoggedIn(false);
+      localStorage.clear();
+      navigate('/', { replace: true })
+    } catch(err) {
+      console.log(err)
+    }
   }
   
   const goLanding = () => {
@@ -108,9 +118,8 @@ function App () {
     try {
       if (loggedIn) {
         const user = await MainApi.checkToken();
-        await handleSavedMovies();
-        setLoggedIn(true)
         setCurrentUser(user)
+        setLoggedIn(true)
       }
     } catch(err) {
       console.log(err)
@@ -122,6 +131,10 @@ function App () {
   useEffect(() => {
     handleTokenCheck()
   }, [handleTokenCheck])
+
+  useEffect(() => {
+    loggedIn && handleSavedMovies()
+  }, [loggedIn, handleSavedMovies])
 
   if (isLoading) {
     return <Preloader />
@@ -157,7 +170,8 @@ function App () {
         <Route path="/movies" element={
           <ProtectedRoute 
             element={Movies} 
-            addFavoritMovies={addFavoritMovies} 
+            addFavoritMovies={addFavoritMovies}
+            deleteBeatMovies={deleteBeatMovies} 
             loggedIn={loggedIn} 
             isLoading={isLoading}
             savedMoviesList={savedMoviesList}
@@ -178,8 +192,6 @@ function App () {
       </Routes>
       <Footer />
     </CurrentUserContext.Provider>
-    
-    
   )
 }
 
