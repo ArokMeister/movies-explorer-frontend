@@ -1,10 +1,13 @@
-import Form from "../../authorize/Form/Form";
+import { useState, useEffect, useCallback, useContext } from "react";
+import { CurrentUserContext } from "../../../contexts/CurrentUserContext";
 import { NavLink } from "react-router-dom";
+import Form from "../../authorize/Form/Form";
 
 import "./Profile.css";
-import { useState, useEffect, useCallback } from "react";
 
-function Profile({ currentUser, updateUser, onLogout }) {
+function Profile({ updateUser, onLogout }) {
+
+  const currentUser = useContext(CurrentUserContext)
 
   const [values, setValues] = useState({ name: currentUser.name, email: currentUser.email })
   const [buttonState, setButtonState] = useState(false)
@@ -25,7 +28,7 @@ function Profile({ currentUser, updateUser, onLogout }) {
     setButtonState(!buttonState)
   }
 
-  function onChange(evt) {
+  const onChange = (evt) => {
     setValues({ ...values, [evt.target.name]: evt.target.value })
   }
 
@@ -33,7 +36,6 @@ function Profile({ currentUser, updateUser, onLogout }) {
     evt.preventDefault()
     await updateUser(values.name, values.email)
     toggleInput()
-    console.log(currentUser)
   }
 
   useEffect(() => {
@@ -48,7 +50,16 @@ function Profile({ currentUser, updateUser, onLogout }) {
     <main className="profile">
       <div className="profile__container">
         <h1 className="profile__title">{`Привет, ${currentUser.name}!`}</h1>
-        <Form btnText="Редактировать" onClick={toggleInput} inputState={inputState} buttonState={buttonState} onChange={onChange} onSubmit={submit} values={values} saveButtonState={isSaveButtonDisabled} />
+        <Form 
+          btnText="Редактировать" 
+          onClick={toggleInput} 
+          inputState={inputState} 
+          buttonState={buttonState} 
+          onChange={onChange} 
+          onSubmit={submit} 
+          values={values} 
+          saveButtonState={isSaveButtonDisabled}
+        />
         <NavLink className="profile__exit" to="/" onClick={onLogout}>Выйти из аккаунта</NavLink>
       </div>
     </main>

@@ -3,6 +3,14 @@
   position: relative;
 }
 
+.card__link {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
 .card__image {
   box-sizing: border-box;
   object-fit: cover;

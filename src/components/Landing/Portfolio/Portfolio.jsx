@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { staticSite, adaptiveSite, singlePageApplication } from "../../../utils/constants";
+import { STATIC_SITE, ADAPTIVE_SITE, SINGLE_PAGE_APLICATION } from "../../../utils/constants";
 
 import "./Portfolio.css";
 
@@ -10,13 +10,13 @@ function Portfolio () {
         <h2 className="portfolio__title">Портфолио</h2>
         <ul className="portfolio__list">
           <li className="portfolio__list-item">
-            <Link className="portfolio__list-link" to={staticSite} target="_blank">Статичный сайт <span>↗</span></Link>
+            <Link className="portfolio__list-link" to={STATIC_SITE} target="_blank">Статичный сайт <span>↗</span></Link>
           </li>
           <li className="portfolio__list-item">
-            <Link className="portfolio__list-link" to={adaptiveSite} target="_blank">Адаптивный сайт <span>↗</span></Link>
+            <Link className="portfolio__list-link" to={ADAPTIVE_SITE} target="_blank">Адаптивный сайт <span>↗</span></Link>
           </li>
           <li className="portfolio__list-item">
-            <Link className="portfolio__list-link" to={singlePageApplication} target="_blank">Одностраничное приложение <span>↗</span></Link>
+            <Link className="portfolio__list-link" to={SINGLE_PAGE_APLICATION} target="_blank">Одностраничное приложение <span>↗</span></Link>
           </li>
         </ul>
       </div>

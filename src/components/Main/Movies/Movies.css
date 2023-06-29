@@ -25,9 +25,21 @@
   display: none;
 }
 
-@media screen and (max-width: 600px) {
+.movies__notfound {
+  font-size: 36px;
+  font-weight: 500;
+  line-height: 1.2;
+  color: #FF6838;
+  text-align: center;
+  margin: 0 auto;
+}
 
+@media screen and (max-width: 600px) {
   .movies__button {
     width: 240px;
+  }
+
+  .movies__notfound {
+    font-size: 22px;
   }
 }

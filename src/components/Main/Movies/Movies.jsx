@@ -3,13 +3,19 @@ import { useCastomForm } from "../../../utils/hook/useForm";
 import SearchForm from "../SearchForm/SearchForm"
 import MoviesCardList from "../MoviesCardList/MoviesCardList";
 import movies from '../../../utils/MoviesApi';
+import Preloader from "../Preloader/Preloader";
+
+import { PC_RESOLUTION, TAB_RESOLUTION, MOBILE_RESOLUTION,
+  WIDE_PC_RENDER_CARD, REGULAR_PC_RENDER_CARD, TAB_RENDER_CARD, MOBILE_RENDER_CARD,
+  PC_MORE_CARD, TAB_MORE_CARD, MOBILE_MORE_CARD } from "../../../utils/constants/index";
 
 import './Movies.css';
 
-function Movies({ isLoading, addFavoritMovies, deleteBeatMovies, savedMoviesList }) {
+function Movies({ addFavoritMovies, deleteBeatMovies, savedMoviesList }) {
 
   const [moviesList, setMoviesList] = useState([]);
   const [filtredMoviesList, setFiltredMoviesList] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const [isCheckboxMoviesActive, setIsCheckboxMoviesActive] = useState(false);
 
@@ -25,11 +31,11 @@ function Movies({ isLoading, addFavoritMovies, deleteBeatMovies, savedMoviesList
   }
 
   const saveSearch = () => {
-    localStorage.setItem('Search', values.search)
+    localStorage.setItem('Search', values.search || '')
   }
 
   const getSearch = () => {
-    return localStorage.getItem('Search')
+    return localStorage.getItem('Search') || ''
   }
 
   const getMovies = async () => {
@@ -38,42 +44,45 @@ function Movies({ isLoading, addFavoritMovies, deleteBeatMovies, savedMoviesList
         const parsDataLS = JSON.parse(localStorage.getItem('Movies'))
         setMoviesList(parsDataLS)
       } else {
+        setIsLoading(true)
         const moviesList = await movies.getMoviesData();
         localStorage.setItem('Movies', JSON.stringify(moviesList));
         setMoviesList(moviesList)
       }
     } catch(err) {
       console.log(err)
+    } finally {
+      setIsLoading(false)
     }
   }
   
   const renderMovies = useCallback(() => {
-    const keyword = getSearch()
-    const filtredMovies = moviesList.filter(movie => movie.nameRU.includes(keyword) || movie.nameEN.includes(keyword))
+    const keyword = getSearch().toLowerCase()
+    const filtredMovies = moviesList.filter(movie => movie.nameRU.toLowerCase().includes(keyword) || movie.nameEN.toLowerCase().includes(keyword))
     localStorage.setItem('FiltredMovies', JSON.stringify(filtredMovies))
     setFiltredMoviesList(filtredMovies)
     if (isCheckboxMoviesActive) {
       const filtredShortMovies = filtredMovies.filter(movie => movie.duration <= 40)
       setFiltredMoviesList(filtredShortMovies)
     }
-    if (window.innerWidth >= 1280) {
-      setMaxCardsCount(12);
-    } else if (window.innerWidth >= 768) {
-      setMaxCardsCount(8);
-    } else if (window.innerWidth >= 480){
-      setMaxCardsCount(5);
+    if (window.innerWidth >= PC_RESOLUTION) {
+      setMaxCardsCount(WIDE_PC_RENDER_CARD);
+    } else if (window.innerWidth >= TAB_RESOLUTION) {
+      setMaxCardsCount(REGULAR_PC_RENDER_CARD);
+    } else if (window.innerWidth >= MOBILE_RESOLUTION) {
+      setMaxCardsCount(TAB_RENDER_CARD);
+    } else {
+      setMaxCardsCount(MOBILE_RENDER_CARD);
     }
   }, [moviesList, isCheckboxMoviesActive])
 
   const handleLoadMore = () => {
-    if (window.innerWidth >= 1280) {
-      setCardsCount(cardsCount + 4);
-    } else if (window.innerWidth >= 1150) {
-      setCardsCount(cardsCount + 3)
-    } else if (window.innerWidth >= 768) {
-      setCardsCount(cardsCount + 2);
-    } else if (window.innerWidth >= 480) {
-      setCardsCount(cardsCount + 1);
+    if (window.innerWidth >= PC_RESOLUTION) {
+      setCardsCount(cardsCount + PC_MORE_CARD);
+    } else if (window.innerWidth >= TAB_RESOLUTION) {
+      setCardsCount(cardsCount + TAB_MORE_CARD)
+    } else {
+      setCardsCount(cardsCount + MOBILE_MORE_CARD);
     }
   }
   
@@ -108,9 +117,24 @@ function Movies({ isLoading, addFavoritMovies, deleteBeatMovies, savedMoviesList
 
   return (
     <main className="movies">
-      <SearchForm inputValues={values} onChange={handleChange} onSubmit={handleSubmit} onShort={handleCheckbox} checked={isCheckboxMoviesActive}/>
-      {filtredMoviesList?.length === 0 ? <p className="movies__notfound">Ничего не найдено</p> : null}
-      <MoviesCardList moviesList={filtredMoviesList.slice(0, cardsCount)} savedMoviesList={savedMoviesList} addFavoritMovies={addFavoritMovies} deleteBeatMovies={deleteBeatMovies} />
+      <SearchForm 
+        inputValues={values} 
+        onChange={handleChange} 
+        onSubmit={handleSubmit} 
+        onShort={handleCheckbox} 
+        checked={isCheckboxMoviesActive}
+      />
+      {moviesList?.length === 0 || filtredMoviesList.length > 0 ? null : <p className="movies__notfound">Ничего не найдено</p>}
+      {isLoading ? (
+        <Preloader />
+      ) : (
+        <MoviesCardList 
+          moviesList={filtredMoviesList.slice(0, cardsCount)} 
+          savedMoviesList={savedMoviesList} 
+          addFavoritMovies={addFavoritMovies} 
+          deleteBeatMovies={deleteBeatMovies} 
+          isLoading={isLoading}/>
+      )}
       {filtredMoviesList.length <= cardsCount ? null : (
         <button className="movies__button" type="button" onClick={handleLoadMore}>Ещё</button>
       )}

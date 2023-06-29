@@ -1,11 +1,10 @@
-import { useEffect } from "react";
 import MoviesCard from "../MoviesCard/MoviesCard";
-import Preloader from "../Preloader/Preloader";
 
 import "./MoviesCardList.css";
 
-function MoviesCardList({ moviesList, addFavoritMovies, deleteFavoritMovies, deleteBeatMovies, savedMoviesList }) {
-  console.log(savedMoviesList)
+function MoviesCardList({ moviesList, addFavoritMovies, deleteFavoritMovies, deleteBeatMovies, savedMoviesList, isLoading }) {
+
+
   const movies = moviesList.map(movie => {
     const isSaved = savedMoviesList?.some(savedMovie => savedMovie.movieId === movie.id || savedMovie.movieId === movie._id);
 
@@ -17,6 +16,7 @@ function MoviesCardList({ moviesList, addFavoritMovies, deleteFavoritMovies, del
           deleteFavoritMovies={deleteFavoritMovies}
           deleteBeatMovies={deleteBeatMovies}
           addFavoritMovies={addFavoritMovies}
+          isLoading={isLoading}
         />
       </li>
     );
@@ -28,33 +28,3 @@ function MoviesCardList({ moviesList, addFavoritMovies, deleteFavoritMovies, del
 }
 
 export default MoviesCardList;
-    
-
-//   return (
-//     <>
-//       {isLoading ? (
-//         <Preloader />
-//       ) : (
-//         <ul className="movies__list container">
-//           {moviesList.map(item => (
-//             <MoviesCard 
-//               key={item.id || item._id}
-//               movie={item}
-//               isLiked={isLiked}
-//               isLoading={isLoading}
-//               onButtonClick={isSaved ? deleteFavoritMovies : addFavoritMovies}
-//               addFavoritMovies={addFavoritMovies}
-//               deleteFavoritMovies={deleteFavoritMovies}
-//               savedMoviesList={savedMoviesList}
-//               isAddFavorit={isAddFavorit}
-//               isSavedMovie={isSaved}
-//             />
-//           ))}
-//         </ul>
-//       )}
-//     </>
-    
-//   )
-// }
-
-// export default MoviesCardList;

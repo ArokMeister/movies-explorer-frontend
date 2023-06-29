@@ -3,7 +3,6 @@ import "./SearchForm.css";
 
 function SearchForm({ inputValues, onChange, onSubmit, onShort, checked }) {
 
-  // console.log(values)
   return (
     <div className="search__container container">
       <form className="search__form" onSubmit={onSubmit}>

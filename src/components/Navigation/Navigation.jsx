@@ -24,19 +24,7 @@ function Navigation({ loggedIn }) {
   
   return (
     <>
-      {location.pathname === "/" &&
-        <nav className="navigation__landing">
-          <ul className="navigation__landing-list">
-            <li className="navigation__landing-item">
-              <Link className="navigation__landing-link white" to={loggedIn ? "/movies" : "/signup"}>Регистрация</Link>
-            </li>
-            <li className="navigation__landing-item">
-              <Link className="navigation__landingt-link active" to={loggedIn ? "/movies" : "/signin"}>Войти</Link>
-            </li>
-          </ul>
-        </nav>
-      }
-      {location.pathname !== "/" &&
+      {loggedIn ? (
         <nav className={`navigation ${isMenuOpen ? "navigation__bg" : ""}`}>
           <button className={`burger ${isMenuOpen ? "close" : ""}`} onClick={toggleMenu}>
             <span className="burger__span"></span>
@@ -58,9 +46,20 @@ function Navigation({ loggedIn }) {
               <li className="navigation__list-item account">
                 <Link className="navigation__list-link" to="/profile">Аккаунт <div className="navigation__list-icon" /></Link>
               </li>
-           </ul>
+          </ul>
         </nav>
-      }
+      ) : (
+        <nav className="navigation__landing">
+          <ul className="navigation__landing-list">
+            <li className="navigation__landing-item">
+              <Link className="navigation__landing-link white" to={loggedIn ? "/movies" : "/signup"}>Регистрация</Link>
+            </li>
+            <li className="navigation__landing-item">
+              <Link className="navigation__landingt-link active" to={loggedIn ? "/movies" : "/signin"}>Войти</Link>
+            </li>
+          </ul>
+        </nav>
+      )}
   </>
 )}
 

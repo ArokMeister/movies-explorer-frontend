@@ -13,11 +13,11 @@ function SavedMovies({ savedMoviesList, deleteFavoritMovies }) {
   const { values, handleChange } = useCastomForm();
 
   const saveSearch = () => {
-    localStorage.setItem('SaveSearch', values.search)
+    localStorage.setItem('SaveSearch', values.search || '')
   }
 
   const getSearch = () => {
-    return localStorage.getItem('SaveSearch')
+    return localStorage.getItem('SaveSearch') || ''
   }
 
   const handleCheckbox = () => {
@@ -27,10 +27,13 @@ function SavedMovies({ savedMoviesList, deleteFavoritMovies }) {
   }
 
   const renderMovies = useCallback(() => {
-    const keyword = getSearch();
-    let filtredMovies = savedMoviesList.filter(movie => movie.nameRU.includes(keyword) || movie.nameEN.includes(keyword)) 
+    const keyword = getSearch().toLowerCase();
+    let filtredMovies = savedMoviesList.filter(movie => movie.nameRU.toLowerCase().includes(keyword) || movie.nameEN.toLowerCase().includes(keyword)) 
     setSavedSortMovies(filtredMovies)
     if (isCheckboxMoviesActive) {
+      console.log(keyword, 'keyword')
+      console.log(filtredMovies, 'filtredmovies')
+    
       const filtredShortMovies = filtredMovies.filter(movie => movie.duration <= 40)
       setSavedSortMovies(filtredShortMovies)
     }
@@ -43,15 +46,8 @@ function SavedMovies({ savedMoviesList, deleteFavoritMovies }) {
   }
 
   useEffect(() => {
-    const savedMoviesFromStorage = localStorage.getItem('savedMoviesList');
-    if (savedMoviesFromStorage && !savedMoviesList.length) {
-      setSavedSortMovies(JSON.parse(savedMoviesFromStorage));
-    }
-
     renderMovies();
-
-    // renderMovies()
-  }, [renderMovies, isCheckboxMoviesActive, savedMoviesList])
+  }, [renderMovies, isCheckboxMoviesActive])
   
   
   useEffect(() => {

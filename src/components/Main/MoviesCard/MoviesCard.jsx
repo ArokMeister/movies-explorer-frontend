@@ -1,20 +1,15 @@
 import { useEffect, useState, useCallback } from "react";
 import { useLocation } from "react-router-dom";
 
-import { formatTime, imageURLBeatFilms } from "../../../utils/constants";
+import { IMAGE_URL_BEAT_FILMS } from "../../../utils/constants";
+import { formatTime } from "../../../utils/formatTime";
 
 import "./MoviesCard.css";
-import Preloader from "../Preloader/Preloader";
+import { Link } from "react-router-dom";
 
 function MoviesCard({ movie, addFavoritMovies, deleteFavoritMovies, deleteBeatMovies, isSaved }) {
 
   const [liked, setLiked] = useState(false);
-
-  useEffect(() => {
-    if (isSaved) {
-      setLiked(true);
-    }
-  }, [isSaved]);
 
   const location = useLocation();
 
@@ -44,7 +39,7 @@ function MoviesCard({ movie, addFavoritMovies, deleteFavoritMovies, deleteBeatMo
 
   function changeURL() {
     if (location.pathname === "/movies") {
-      return (`${imageURLBeatFilms}${movie.image.url}`)
+      return (`${IMAGE_URL_BEAT_FILMS}${movie.image.url}`)
     }
     if (location.pathname === "/saved-movies") {
       return (`${movie.image}`)
@@ -52,11 +47,18 @@ function MoviesCard({ movie, addFavoritMovies, deleteFavoritMovies, deleteBeatMo
   }
 
   useEffect(() => {
-    changeButton()
+    changeButton();
   }, [changeButton])
+
+  useEffect(() => {
+    if (isSaved) {
+      setLiked(true);
+    }
+  }, [isSaved])
 
   return (
     <article className="card">
+      <Link className="card__link" to={movie.trailerLink} target="_blank" />
       <img className="card__image" src={changeURL()} alt={movie.nameRU} />
       <button className={changeButton()} onClick={handleClick} type="button" aria-label="Функциональная кнопка лайка и удаления" />
       <div className="card__info">
