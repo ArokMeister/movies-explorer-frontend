@@ -1,5 +1,4 @@
-// export const BASE_URL = 'https://api.movie-explorer.nomoredomains.rocks';
-export const BASE_URL = 'http://localhost:3000';
+export const BASE_URL = 'https://api.movie-explorer.nomoredomains.rocks';
 
 function makeRequest(url, method, body) {
   const headers = {
