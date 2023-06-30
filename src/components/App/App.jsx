@@ -144,7 +144,8 @@ function App () {
 
   useEffect(() => {
     loggedIn && handleSavedMovies()
-  }, [loggedIn, handleSavedMovies])
+    navigate('/movies', { replace: true })
+  }, [loggedIn, handleSavedMovies, navigate])
 
   if (isLoading) {
     return <Preloader />
