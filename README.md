@@ -1,6 +1,6 @@
 # movies-explorer-frontend
 
-<h2>Figma Maket</h2> - <a href="https://disk.yandex.ru/d/NVyYyjerN5-wPA">ссылка на Яндекс.Диск</a>
+<h2>Figma Maket - <a href="https://disk.yandex.ru/d/NVyYyjerN5-wPA">ссылка на Яндекс.Диск</a> </h2> 
 
 <h3>Ссылка на пул реквест - <a href="https://github.com/ArokMeister/movies-explorer-frontend/pull/3">Pull</a></h3> 
 
