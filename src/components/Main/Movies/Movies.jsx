@@ -18,6 +18,7 @@ function Movies({ addFavoritMovies, deleteBeatMovies, savedMoviesList }) {
   const [isLoading, setIsLoading] = useState(false);
 
   const [isCheckboxMoviesActive, setIsCheckboxMoviesActive] = useState(false);
+  const [isPastSearch, setIsPastSearch] = useState('')
 
   const [cardsCount, setCardsCount] = useState(0);
   const [maxCardsCount, setMaxCardsCount] = useState(0);
@@ -115,6 +116,10 @@ function Movies({ addFavoritMovies, deleteBeatMovies, savedMoviesList }) {
     }
   }, []);
 
+  useEffect(() => {
+    setIsPastSearch(getSearch())
+  }, [])
+
   return (
     <main className="movies">
       <SearchForm 
@@ -123,6 +128,7 @@ function Movies({ addFavoritMovies, deleteBeatMovies, savedMoviesList }) {
         onSubmit={handleSubmit} 
         onShort={handleCheckbox} 
         checked={isCheckboxMoviesActive}
+        isPastSearch={isPastSearch}
       />
       {moviesList?.length === 0 || filtredMoviesList.length > 0 ? null : <p className="movies__notfound">Ничего не найдено</p>}
       {isLoading ? (

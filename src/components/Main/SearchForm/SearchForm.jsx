@@ -1,7 +1,7 @@
 import FilterCheckbox from "../FilterCheckbox/FilterCheckbox";
 import "./SearchForm.css";
 
-function SearchForm({ inputValues, onChange, onSubmit, onShort, checked }) {
+function SearchForm({ inputValues, onChange, onSubmit, onShort, checked, isPastSearch }) {
 
   return (
     <div className="search__container container">
@@ -11,7 +11,7 @@ function SearchForm({ inputValues, onChange, onSubmit, onShort, checked }) {
           placeholder="Фильм"
           name="search"
           id="search"
-          value={inputValues.search || ''}
+          value={inputValues.search || isPastSearch}
           onChange={onChange}
           type="text"
           autoComplete="off"
