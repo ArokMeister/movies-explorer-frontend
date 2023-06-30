@@ -7,7 +7,7 @@ import Preloader from "../Preloader/Preloader";
 
 import { PC_RESOLUTION, TAB_RESOLUTION, MOBILE_RESOLUTION,
   WIDE_PC_RENDER_CARD, REGULAR_PC_RENDER_CARD, TAB_RENDER_CARD, MOBILE_RENDER_CARD,
-  PC_MORE_CARD, TAB_MORE_CARD, MOBILE_MORE_CARD } from "../../../utils/constants/index";
+  PC_MORE_CARD, TAB_MORE_CARD, MOBILE_MORE_CARD, MOVIES_DURATION_FILTER } from "../../../utils/constants/index";
 
 import './Movies.css';
 
@@ -63,7 +63,7 @@ function Movies({ addFavoritMovies, deleteBeatMovies, savedMoviesList }) {
     localStorage.setItem('FiltredMovies', JSON.stringify(filtredMovies))
     setFiltredMoviesList(filtredMovies)
     if (isCheckboxMoviesActive) {
-      const filtredShortMovies = filtredMovies.filter(movie => movie.duration <= 40)
+      const filtredShortMovies = filtredMovies.filter(movie => movie.duration <= MOVIES_DURATION_FILTER)
       setFiltredMoviesList(filtredShortMovies)
     }
     if (window.innerWidth >= PC_RESOLUTION) {

@@ -5,6 +5,8 @@ export const IMAGE_URL_BEAT_FILMS = "https://api.nomoreparties.co";
 export const YANDEX_SITE = "https://practicum.yandex.ru/";
 export const MY_GITHUB = "https://github.com/ArokMeister";
 
+export const MOVIES_DURATION_FILTER = 40;
+
 export const PC_RESOLUTION = 1157;
 export const TAB_RESOLUTION = 867;
 export const MOBILE_RESOLUTION = 600;
