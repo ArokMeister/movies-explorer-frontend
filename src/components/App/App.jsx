@@ -23,6 +23,7 @@ function App () {
   const [currentUser, setCurrentUser] = useState({});
   const [loggedIn, setLoggedIn] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [isSubmiting, setIsSubmiting] = useState(true)
   const [errorPopup, setErrorPopup] = useState({ errorMessage: '', isSucces: false, isOpen: false });
 
   const navigate = useNavigate();
@@ -77,6 +78,7 @@ function App () {
   }
 
   async function updateUser(name, email) {
+    setIsSubmiting(true)
     try {
       const user = await MainApi.updateUser(name, email);
       if (user) {
@@ -85,10 +87,13 @@ function App () {
       }
     } catch(err) {
       handleErrorMessage(err)
+    } finally {
+      setIsSubmiting(false)
     }
   }
  
   async function handleLogin(email, password) {
+    setIsSubmiting(true)
     try {
       const { user } = await MainApi.authorize(email, password);
       await handleSavedMovies()
@@ -98,15 +103,20 @@ function App () {
       navigate ('/movies', { replace: true });
     } catch(err) {
       handleErrorMessage(err)
+    } finally {
+      setIsSubmiting(false)
     }
   }
 
   async function handleRegister(name, email, password) {
+    setIsSubmiting(true)
     try {
       await MainApi.register(name, email, password);
       await handleLogin(email, password)
     } catch(err) {
       handleErrorMessage(err)
+    } finally {
+      setIsSubmiting(false)
     }
   }
 
@@ -164,11 +174,11 @@ function App () {
         }/>
 
         <Route path="/signup" element={
-          <Register onRegister={handleRegister} goLanding={goLanding} loggedIn={loggedIn} />
+          <Register onRegister={handleRegister} goLanding={goLanding} loggedIn={loggedIn} isSubmiting={isSubmiting} />
         }/>
 
         <Route path="/signin" element={
-          <Login onLogin={handleLogin} goLanding={goLanding} loggedIn={loggedIn} />
+          <Login onLogin={handleLogin} goLanding={goLanding} loggedIn={loggedIn} isSubmiting={isSubmiting} />
         }/>
 
         <Route path="/profile" element={
@@ -177,6 +187,7 @@ function App () {
             loggedIn={loggedIn} 
             updateUser={updateUser} 
             onLogout={handleLogOut} 
+            isSubmiting={isSubmiting}
            />} 
         />
 

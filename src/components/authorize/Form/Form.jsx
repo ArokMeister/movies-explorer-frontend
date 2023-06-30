@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 
 import "./Form.css";
 
-function Form ({ onSubmit, onChange, btnText, values, onClick, inputState, buttonState, saveButtonState }) {
+function Form ({ onSubmit, onChange, btnText, values, onClick, inputState, buttonState, saveButtonState, isSubmiting }) {
 
   const { register, formState: { errors }, handleSubmit } = useForm({ mode: "onChange" })
 
@@ -12,7 +12,7 @@ function Form ({ onSubmit, onChange, btnText, values, onClick, inputState, butto
   if (location.pathname === "/signup") {
     return (
       <div className="form__container">
-        <form className="form" onSubmit={handleSubmit(onSubmit)} noValidate >
+        <form className="form" onSubmit={handleSubmit(onSubmit)} noValidate disabled={isSubmiting} >
           <label className="form__label">Имя</label>
           <input
             className="form__input"
@@ -78,7 +78,7 @@ function Form ({ onSubmit, onChange, btnText, values, onClick, inputState, butto
   if (location.pathname === "/signin") {
     return (
       <div className="form__container">
-        <form className="form" onSubmit={handleSubmit(onSubmit)} noValidate>
+        <form className="form" onSubmit={handleSubmit(onSubmit)} noValidate disabled={isSubmiting}>
         <label className="form__label">E-mail</label>
           <input
             className="form__input"
@@ -125,7 +125,7 @@ function Form ({ onSubmit, onChange, btnText, values, onClick, inputState, butto
   if (location.pathname === "/profile") {
     return (
       <div className="form__container">
-        <form className="form form__profile" onSubmit={onSubmit} noValidate>
+        <form className="form form__profile" onSubmit={onSubmit} noValidate disabled={isSubmiting} >
           <label className="form__label-profile">
             Имя
             <input

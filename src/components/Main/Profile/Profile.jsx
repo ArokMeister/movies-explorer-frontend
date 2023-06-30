@@ -5,7 +5,7 @@ import Form from "../../authorize/Form/Form";
 
 import "./Profile.css";
 
-function Profile({ updateUser, onLogout }) {
+function Profile({ updateUser, onLogout, isSubmiting }) {
 
   const currentUser = useContext(CurrentUserContext)
 
@@ -13,7 +13,6 @@ function Profile({ updateUser, onLogout }) {
   const [buttonState, setButtonState] = useState(false)
   const [inputState, setInputState] = useState(true)
   const [isSaveButtonDisabled, setIsSaveButtonDisabled] = useState(true)
-
 
   const checkDataUser = useCallback(() => {
     if (values.name === currentUser.name && values.email === currentUser.email) {
@@ -59,6 +58,7 @@ function Profile({ updateUser, onLogout }) {
           onSubmit={submit} 
           values={values} 
           saveButtonState={isSaveButtonDisabled}
+          isSubmiting={isSubmiting}
         />
         <NavLink className="profile__exit" to="/" onClick={onLogout}>Выйти из аккаунта</NavLink>
       </div>
