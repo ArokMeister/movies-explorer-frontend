@@ -1,11 +1,13 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import Form from '../Form/Form';
 import logo from '../../../images/logo.svg'
 
 import "./Register.css"
 
-function Register ({ goLanding, onRegister }) {
+function Register ({ goLanding, onRegister, loggedIn }) {
+
+  const navigate = useNavigate();
 
   const [values, setValues] = useState({ name: '', email: '', password: '' })
 
@@ -18,6 +20,11 @@ function Register ({ goLanding, onRegister }) {
     setValues({ name: '', email: '', password: '' })
   }
 
+  useEffect(() => {
+    if (loggedIn) {
+      navigate("/movies", { replace: true })
+    }
+  })
 
   return (
     <section className="register">

@@ -1,11 +1,13 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import Form from '../Form/Form';
 import logo from '../../../images/logo.svg'
 
 import "./Login.css"
 
-function Login ({ goLanding, onLogin }) {
+function Login ({ goLanding, onLogin, loggedIn }) {
+
+  const navigate = useNavigate();
 
   const [values, setValues] = useState({ email: '', password: '' })
   
@@ -17,6 +19,12 @@ function Login ({ goLanding, onLogin }) {
     onLogin(values.email, values.password)
     setValues({ email: '', password: '' })
   }
+
+  useEffect(() => {
+    if (loggedIn) {
+      navigate("/movies", { replace: true })
+    }
+  })
 
   return (
     <section className="login">

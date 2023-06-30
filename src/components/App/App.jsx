@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from 'react';
-import { Routes, Route, useNavigate } from 'react-router-dom';
+import { Routes, Route, useNavigate, NavLink } from 'react-router-dom';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 import ProtectedRoute from '../Main/ProtectedRoute/ProtectedRoute';
 import Header from '../Header/Header';
@@ -15,6 +15,8 @@ import ErrorPopup from '../Main/Popup/ErrorPopup';
 import * as MainApi from '../../utils/MainApi';
 import Preloader from '../Main/Preloader/Preloader';
 import { IMAGE_URL_BEAT_FILMS } from '../../utils/constants';
+
+
 
 function App () {
   const [savedMoviesList, setSavedMoviesList] = useState([]);
@@ -144,8 +146,7 @@ function App () {
 
   useEffect(() => {
     loggedIn && handleSavedMovies()
-    navigate('/movies', { replace: true })
-  }, [loggedIn, handleSavedMovies, navigate])
+  }, [loggedIn, handleSavedMovies])
 
   if (isLoading) {
     return <Preloader />
@@ -163,11 +164,11 @@ function App () {
         }/>
 
         <Route path="/signup" element={
-          <Register onRegister={handleRegister} goLanding={goLanding} />
+          <Register onRegister={handleRegister} goLanding={goLanding} loggedIn={loggedIn} />
         }/>
 
         <Route path="/signin" element={
-          <Login onLogin={handleLogin} goLanding={goLanding} />
+          <Login onLogin={handleLogin} goLanding={goLanding} loggedIn={loggedIn} />
         }/>
 
         <Route path="/profile" element={
