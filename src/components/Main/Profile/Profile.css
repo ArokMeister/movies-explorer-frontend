@@ -1,0 +1,53 @@
+.profile {
+  display: flex;
+  justify-content: center;
+}
+
+.profile__container {
+  display: flex;
+  flex-direction: column;
+  min-width: 410px;
+  margin: 70px auto;
+}
+
+.profile__title {
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 1.2;
+  margin: 74px auto 123px;
+  text-align: center;
+}
+
+.profile__subtitle {
+  text-align: center;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.2;
+  color: #a0a0a0;
+}
+
+.profile__exit {
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.2;
+  text-decoration: none;
+  align-self: center;
+  color: #FF004D;
+  border: none;
+  background-color: #FFF;
+  cursor: pointer;
+  width: max-content;
+
+  &:hover {
+    opacity: .7;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .profile__container {
+    display: flex;
+    flex-direction: column;
+    min-width: 260px;
+    margin: 80px 30px;
+  }
+}

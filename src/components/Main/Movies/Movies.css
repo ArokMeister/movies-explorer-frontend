@@ -1,0 +1,45 @@
+.movies {
+  flex-grow: 1;
+}
+
+.movies__button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  margin: 50px auto 80px;
+  width: 320px;
+  height: 36px;
+  font-size: 12px;
+  font-weight: 500;
+  border-radius: 5px;
+  border: 1px solid #E8E8E8;
+  background-color: transparent;
+
+  &:hover {
+    opacity: .8;
+  }
+}
+
+.hide {
+  display: none;
+}
+
+.movies__notfound {
+  font-size: 36px;
+  font-weight: 500;
+  line-height: 1.2;
+  color: #FF6838;
+  text-align: center;
+  margin: 0 auto;
+}
+
+@media screen and (max-width: 600px) {
+  .movies__button {
+    width: 240px;
+  }
+
+  .movies__notfound {
+    font-size: 22px;
+  }
+}

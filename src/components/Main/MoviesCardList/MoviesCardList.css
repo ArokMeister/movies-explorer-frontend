@@ -1,0 +1,28 @@
+.movies__list {
+  position: relative;
+  max-width: 1140px;
+  min-height: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 270px);
+  justify-content: center;
+  align-items: center;
+  column-gap: 20px;
+  row-gap: 38px;
+  list-style: none;
+  padding: 0;
+  margin: 0 auto 50px;
+}
+
+@media screen and (max-width: 768px) {
+  .movies__list {
+    grid-template-columns: repeat(auto-fill, minmax(300px, 339px));
+    gap: 30px;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .movies__list {
+    grid-template-columns: repeat(1, 300px);
+    gap: 30px;
+  }
+}
